@@ -5,6 +5,8 @@
 #include <string.h>
 #include <assert.h>
 
+#include "hash_table.h"
+
 
 // static ----------------------------------------------------------------------
 
@@ -86,7 +88,7 @@ TextState textDtor(Text* text)
 }
 
 
-int textNextWord(Text* text, char* buffer, size_t buffer_size)
+int textPutNextWordToBuffer(Text* text, char* buffer, size_t buffer_size)
 {
     assert(text   != NULL);
     assert(buffer != NULL);
@@ -119,6 +121,37 @@ int textNextWord(Text* text, char* buffer, size_t buffer_size)
 
     return i;
 }
+
+
+int textNextWordPointer(Text* text, char** pointer)
+{
+    assert(text != NULL);
+
+    char* current_text = text->data + text->current_position;
+    while (isspace((unsigned char)*current_text))
+    {
+        current_text++;
+    }
+
+    if (*current_text == '\0')
+    {
+        return 0; 
+    }
+
+    *pointer = current_text;
+    size_t i = 0;
+    while (*current_text != '\0'
+        && !isspace((unsigned char)*current_text))
+    {
+        current_text++;
+        i++;
+    }
+
+    text->current_position = current_text - text->data;
+
+    return i;
+}
+
 
 
 TextState textMoveToBegin(Text* text)

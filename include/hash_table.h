@@ -20,8 +20,8 @@ typedef struct HashTable HashTable;
 HashTable* hashTableCtor(void);
 HashTableOperationError hashTableDtor(HashTable* table);
 
-void* hashTableGet(HashTable* table, const char* key);
-const char* hashTableSet(HashTable* table, const char* key, void* value);
+size_t hashTableGet(HashTable* table, const char* key, size_t length);
+const char* hashTableSet(HashTable* table, const char* key, size_t length);
 HashTableOperationError hashTableDelete(HashTable* table, const char* key);
 
 size_t hashTabelLength(HashTable* table);
@@ -29,7 +29,8 @@ size_t hashTabelLength(HashTable* table);
 typedef struct HashTableIterator
 {
     const char* key;
-    void*       value;
+    size_t      length;
+    size_t      count;
 
     // this fields be addressed directly
     HashTable* _table;

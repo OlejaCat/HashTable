@@ -12,16 +12,10 @@
 // static ----------------------------------------------------------------------
 
 
-#define INITIAL_CAPACITY 16
-#define LIST_INITIAL_CAPACITY 4
+#define INITIAL_CAPACITY 2
+#define LIST_INITIAL_CAPACITY 1000
 #define LOAD_FACTOR 2
 #define SCALE_FACTOR 2
-
-typedef struct HashTableElement
-{
-    char* key;
-    void* value;
-} HashTableElement;
 
 
 typedef struct HashTable
@@ -32,7 +26,7 @@ typedef struct HashTable
 } HashTable;
 
 
-static size_t hashFunction(const char* data, size_t capacity);
+static size_t hashFunction(const char* data, size_t length, size_t capacity);
 static HashTableOperationError hashTableResize(HashTable* table);
 
 
@@ -48,7 +42,7 @@ HashTable* hashTableCtor(void)
         return NULL; 
     }
 
-    table->length = 0;
+    table->length   = 0;
     table->capacity = INITIAL_CAPACITY;
 
     table->buckets = (List*)calloc(table->capacity, 
@@ -62,9 +56,10 @@ HashTable* hashTableCtor(void)
 
     for (int i = 0; i < INITIAL_CAPACITY; i++)
     {
-        if(listCtor(&table->buckets[i], 
-                    LIST_INITIAL_CAPACITY) != ListOperationError_SUCCESS)
+        if(listCtor(&table->buckets[i], LIST_INITIAL_CAPACITY) != ListOperationError_SUCCESS)
         {
+            fprintf(stderr, "Error while ctor\n");
+
             for (int j = 0; j <= i; j++)
             {
                 listDtor(&table->buckets[j]);
@@ -90,31 +85,20 @@ HashTableOperationError hashTableDtor(HashTable* table)
 
     for (size_t i = 0; i < table->capacity; i++)
     {
-        List* list = &table->buckets[i];
-
-        size_t current_index = list->node_array[0].next;
-        while (current_index != 0)
-        {
-            HashTableElement* element = (HashTableElement*)list->node_array[current_index].data;
-            free(element->key);
-            free(element);
-            current_index = list->node_array[current_index].next;
-        }
-
         listDtor(&table->buckets[i]);
     }
 
     free(table->buckets);
     free(table);
+
     return HASH_TABLE_SUCCESS;
 }
 
 
-const char* hashTableSet(HashTable* table, const char* key, void* value)
+const char* hashTableSet(HashTable* table, const char* key, size_t length)
 {
     assert(table != NULL);
     assert(key   != NULL);
-    assert(value != NULL);
 
     if ((double)table->length / table->capacity > LOAD_FACTOR)
     {
@@ -125,81 +109,59 @@ const char* hashTableSet(HashTable* table, const char* key, void* value)
         }
     }
 
-    size_t index = hashFunction(key, table->capacity);
-    Node* bucket = table->buckets[index].node_array;
+    size_t index = hashFunction(key, length, table->capacity);
+    List* list = &table->buckets[index];
+    Node* node_array = list->node_array;
 
-    size_t current_index = bucket[0].next;
+    size_t current_index = node_array[0].next;
     while (current_index != 0)
     {
-        HashTableElement* element = (HashTableElement*)bucket[current_index].data;
-        if (!strcmp(element->key, key))
+        Node* node = &node_array[current_index];
+        if (!memcmp(node->key_pointer, key, length))
         {
-            element->value = value;
-            return element->key;
+            node->count++;
+            return node->key_pointer;
         }
-        current_index = bucket[current_index].next;
+        current_index = node->next;
     }
-    
-    HashTableElement* new_element = (HashTableElement*)malloc(sizeof(HashTableElement));
-    char* key_copy = strdup(key);
-    
-    if (new_element == NULL 
-     || key_copy    == NULL)
+
+    int new_node_index = listInsertTail(list);
+    if (new_node_index == 0)
     {
-        free(new_element);
-        free(key_copy);
+        fprintf(stderr, "Error while inserting\n");
         return NULL;
     }
 
-    new_element->key = key_copy;
-    new_element->value = value;
-
-    if (listInsertTail(&table->buckets[index], new_element))
-    {
-        free(new_element);
-        free(key_copy);
-        return NULL;
-    }
+    Node* new_node = &node_array[new_node_index];
+    new_node->key_pointer = key;
+    new_node->length      = length;
+    new_node->count       = 1; 
 
     table->length++;
-    return new_element->key;
+    return key;
 }
 
 
-HashTableOperationError hashTableDelete(HashTable* table, const char* key)
+HashTableOperationError hashTableDelete(HashTable* table, const char* key, size_t length)
 {
     assert(table != NULL);
     assert(key   != NULL);
 
-    size_t index = hashFunction(key, table->capacity);
+    size_t index = hashFunction(key, length, table->capacity);
     List* list = &table->buckets[index];
+    Node* node_array = list->node_array;
 
-    size_t current_index = list->node_array[0].next;
-    bool found = false;
-
+    size_t current_index = node_array[0].next;
     while (current_index != 0)
     {
-        HashTableElement* element = (HashTableElement*)list->node_array[current_index].data;
-        if (!strcmp(element->key, key))
+        Node* node = &node_array[current_index];
+        if (!memcmp(node->key_pointer, key, length))
         {
-            found = true; 
+            listDeleteElement(list, current_index);
             break;
         }
-
-        current_index = list->node_array[current_index].next;
+        current_index = node->next;
     }
-
-    if (!found)
-    {
-        return HASH_TABLE_KEY_NOT_FOUND;
-    }
-
-    HashTableElement* element = (HashTableElement*)list->node_array[current_index].data;
-    free(element->key);
-    free(element);
-
-    listDeleteElement(list, current_index);
-
 
     table->length--;
 
@@ -207,26 +169,26 @@ HashTableOperationError hashTableDelete(HashTable* table, const char* key)
 }
 
 
-void* hashTableGet(HashTable* table, const char* key)
+size_t hashTableGet(HashTable* table, const char* key, size_t length)
 {
     assert(table != NULL);
     assert(key   != NULL);
 
-    size_t index = hashFunction(key, table->capacity);
-    Node* bucket = table->buckets[index].node_array;
+    size_t index = hashFunction(key, length, table->capacity);
+    Node* node_array = table->buckets[index].node_array;
 
-    size_t current_index = bucket[0].next;
+    size_t current_index = node_array[0].next;
     while (current_index != 0)
     {
-        HashTableElement* element = (HashTableElement*)bucket[current_index].data;
-        if (!strcmp(element->key, key))
+        Node* node = &node_array[current_index];
+        if (!memcmp(node->key_pointer, key, length))
         {
-            return element->value;
+            return node->count;
         }
-        current_index = bucket[current_index].next;
+        current_index = node->next;
     }
 
-    return NULL;
+    return 0;
 }
 
 
@@ -235,8 +197,10 @@ HashTableIterator hashTableIterator(HashTable* table)
     assert(table != NULL);
     
     return {
-        .key   = NULL,
-        .value = NULL,
+        .key    = NULL,
+        .length = 0,
+        .count  = 0,
+
         ._table = table,
         ._bucket_index = 0,
         ._node_index = 0,
@@ -246,25 +210,30 @@ HashTableIterator hashTableIterator(HashTable* table)
 
 bool hashTableNext(HashTableIterator* iterator)
 {
-    assert(iterator        != NULL);
+    assert(iterator         != NULL);
     assert(iterator->_table != NULL);
 
     while (iterator->_bucket_index < iterator->_table->capacity)
     {
         List* list = &iterator->_table->buckets[iterator->_bucket_index];
+        Node* node_array = list->node_array;
 
-        iterator->_node_index = list->node_array[iterator->_node_index].next;
+        iterator->_node_index = node_array[iterator->_node_index].next;
+
         if (iterator->_node_index != 0)
         {
-            HashTableElement* element = (HashTableElement*)list->node_array[iterator->_node_index].data;
-            iterator->key = element->key;
-            iterator->value = element->value;
+            Node* node = &node_array[iterator->_node_index];
+
+            iterator->key    = node->key_pointer;
+            iterator->length = node->length;
+            iterator->count  = node->count;
+
             return true;
         }
         else
         {
-            iterator->_bucket_index++;
-            iterator->_node_index = 0; 
+            iterator->_bucket_index++; 
+            iterator->_node_index = 0;
         }
     }
 
@@ -290,7 +259,7 @@ static HashTableOperationError hashTableResize(HashTable* table)
 
     for (size_t index = 0; index < table->capacity; index++) 
     {
-        if (listCtor(&new_buckets[index], LIST_INITIAL_CAPACITY))
+        if (listCtor(&new_buckets[index], LIST_INITIAL_CAPACITY) != ListOperationError_SUCCESS)
         {
             for (size_t i = 0; i < index; i++)
             {
@@ -305,17 +274,21 @@ static HashTableOperationError hashTableResize(HashTable* table)
     for (size_t index = 0; index < old_capacity; index++)
     {
         List* list = &table->buckets[index];
-        size_t current_index = list->node_array[0].next;
+        Node* node_array = list->node_array;
 
+        size_t current_index = node_array[0].next;
         while (current_index != 0)
         {
-            HashTableElement* element = (HashTableElement*)list->node_array[current_index].data;
+            Node* node = &node_array[current_index];
 
-            size_t new_index = hashFunction(element->key, list->capacity);
+            size_t new_index = hashFunction(node->key_pointer, node->length, table->capacity);
             List* new_list = &new_buckets[new_index];
-
-            if (listInsertTail(new_list, element))
+            
+            int list_index = listInsertTail(new_list);
+            if (list_index == 0)
             {
+                fprintf(stderr, "Erro accured in resizing hash table");
+
                 for (size_t i = 0; i < index; i++) 
                 {
                     listDtor(&new_buckets[i]);
@@ -325,7 +298,13 @@ static HashTableOperationError hashTableResize(HashTable* table)
                 return HASH_TABLE_BAD_MEMORY_ALLOCATION;
             }
 
-            current_index = list->node_array[current_index].next;
+            Node* new_node = &new_list->node_array[list_index];
+
+            new_node->key_pointer = node->key_pointer;
+            new_node->length      = node->length;
+            new_node->count       = node->count;
+
+            current_index = node->next;
         }
     }
 
@@ -334,21 +313,22 @@ static HashTableOperationError hashTableResize(HashTable* table)
         listDtor(&table->buckets[index]);
     }
 
+    free(table->buckets);
     table->buckets = new_buckets;
     
     return HASH_TABLE_SUCCESS;
 }
 
 
-static size_t hashFunction(const char* data, size_t capacity)
+static size_t hashFunction(const char* data, size_t length, size_t capacity)
 {
     assert(data != NULL);
 
     unsigned long hash = 5381;
-    int c = 0;
-    while ((c = *data++))
+    for (size_t i = 0; i < length; i++)
     {
-        hash = ((hash << 5) + hash) + c;
+        hash = ((hash << 5) + hash) + (unsigned char)data[i];
     }
+
     return (size_t)hash % capacity;
 }

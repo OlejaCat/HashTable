@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/home/oleg/projects/HashTable/include
 
-CXX_FLAGS = --std=c++20 -Wall -Wextra -pedantic -O1 -g -fsanitize=address,bool,bounds,enum,float-cast-overflow,float-divide-by-zero,integer-divide-by-zero,leak,nonnull-attribute,null,object-size,return,returns-nonnull-attribute,shift,signed-integer-overflow,undefined,unreachable,vla-bound,vptr
+CXX_FLAGS = --std=c++20 -Wall -Wextra -pedantic -fsanitize=address -g 
 

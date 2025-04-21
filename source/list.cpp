@@ -32,19 +32,13 @@ ListOperationError listCtor(List* list, size_t capacity)
         return ListOperationError_ERROR;
     }
 
-    list->node_array[0] = {
-        .data = NULL,
-        .next = 0,
-        .prev = 0,
-    };
+    list->node_array[0].next = 0;
+    list->node_array[0].prev = 0; 
 
     for (size_t index = 1; index <= capacity; index++)
     {
-        list->node_array[index] = {
-            .data = NULL,
-            .next = index + 1,
-            .prev = 0,
-        };
+        list->node_array[index].next = index + 1;
+        list->node_array[index].prev = 0;
     }
 
     list->free_node = 1;
@@ -62,7 +56,6 @@ ListOperationError listDtor(List* list)
     }
 
     free(list->node_array);
-    memset(list, 0, sizeof(List));
 
     return ListOperationError_SUCCESS;
 }
@@ -90,56 +83,57 @@ size_t getPreviousIndex(List* list, size_t index)
 // -------------------------------  INSERT OPERATIONS  -------------------------------
 
 
-ListOperationError listInsert(List* list, size_t index, void* element)
+int listInsert(List* list, size_t index)
 {
-    assert(list    != NULL);
-    assert(element != NULL);
+    assert(list != NULL);
 
     if (index > list->capacity)
     {
         return ListOperationError_ERROR;
     }
 
-    size_t real_index = list->free_node;
-    if (real_index > list->capacity)
+    if (list->free_node == 0
+     || list->free_node >= list->capacity)
     {
-        listResize(list);
+        if (listResize(list) != ListOperationError_SUCCESS)
+        {
+            fprintf(stderr, "Error while resizing list\n");
+            return 0;
+        }
     }
 
+
+    size_t real_index = list->free_node;
+
+    assert(real_index <= list->capacity);
     list->free_node = list->node_array[real_index].next;
 
-    list->node_array[real_index] = {
-        .data = element,
-        .next = list->node_array[index].next,
-        .prev = index,
-    };
+    assert(list->node_array[real_index].next <= list->capacity);
+    list->node_array[real_index].next = list->node_array[index].next;
+    list->node_array[real_index].prev = index;
 
     list->node_array[list->node_array[index].next].prev = real_index;
     list->node_array[index].next = real_index;
 
     list->size++;
 
-    return ListOperationError_SUCCESS;
+    return real_index;
 }
 
 
-ListOperationError listInsertHead(List* list, void* element)
+int listInsertHead(List* list)
 {
     assert(list != NULL);
 
-    listInsert(list, 0, element);
-
-    return ListOperationError_SUCCESS;
+    return listInsert(list, 0);
 }
 
 
-ListOperationError listInsertTail(List* list, void* element)
+int listInsertTail(List* list)
 {
     assert(list != NULL);
 
-    listInsert(list, getPreviousIndex(list, 0), element);
-
-    return ListOperationError_SUCCESS;
+    return listInsert(list, getPreviousIndex(list, 0));
 }
 
 
@@ -161,11 +155,8 @@ ListOperationError listDeleteElement(List* list, size_t index)
     list->node_array[prev].next = next;
     list->node_array[next].prev = prev;
 
-    list->node_array[index] = {
-        .data   = NULL,
-        .next   = list->free_node,
-        .prev   = 0,
-    };
+    list->node_array[index].next = list->free_node;
+    list->node_array[index].prev = 0;
 
     list->free_node = index;
     list->size--;
@@ -197,36 +188,24 @@ ListOperationError listDeleteTail(List* list)
 // static --------------------------------------------------------------------------------------------------------------
 
 
-static ListOperationError listResize(List* list) {
+static ListOperationError listResize(List* list) 
+{
     assert(list != NULL);
 
-    size_t old_capacity = list->capacity;
     list->capacity *= SCALE_FACTOR;
 
     Node* new_array = (Node*)realloc(list->node_array, (list->capacity + 1) * sizeof(Node));
-    if (new_array == NULL) return ListOperationError_ERROR;
+    if (!list->node_array)
+    {
+        fprintf(stderr, "Error while reallocating memory list\n");
+        return ListOperationError_ERROR;
+    }
     list->node_array = new_array;
 
-    for (size_t i = old_capacity + 1; i <= list->capacity; i++) {
-        list->node_array[i] = {
-            .data = NULL,
-            .next = (i == list->capacity) ? 0 : i + 1, 
-            .prev = 0,
-        };
+    for (size_t i = list->free_node; i <= list->capacity; i++) {
+        list->node_array[i].next = i + 1;
+        list->node_array[i].prev = 0;
     }
-
-    size_t current_free = list->free_node;
-    if (current_free != 0) {
-        while (list->node_array[current_free].next != 0 && 
-               list->node_array[current_free].next <= old_capacity) 
-        {
-            current_free = list->node_array[current_free].next;
-        }
-    } else {
-        current_free = old_capacity + 1;
-    }
-
-    list->node_array[current_free].next = old_capacity + 1;
 
     return ListOperationError_SUCCESS;
 }

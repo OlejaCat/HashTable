@@ -25,9 +25,7 @@ CMakeFiles/hash_table.dir/source/hash_table.cpp.o: /home/oleg/projects/HashTable
   /usr/include/bits/pthreadtypes.h \
   /usr/include/bits/select.h \
   /usr/include/bits/stdint-intn.h \
-  /usr/include/bits/stdio.h \
   /usr/include/bits/stdio_lim.h \
-  /usr/include/bits/stdlib-bsearch.h \
   /usr/include/bits/stdlib-float.h \
   /usr/include/bits/struct_mutex.h \
   /usr/include/bits/struct_rwlock.h \
@@ -103,9 +101,7 @@ CMakeFiles/hash_table.dir/source/list.cpp.o: /home/oleg/projects/HashTable/sourc
   /usr/include/bits/pthreadtypes.h \
   /usr/include/bits/select.h \
   /usr/include/bits/stdint-intn.h \
-  /usr/include/bits/stdio.h \
   /usr/include/bits/stdio_lim.h \
-  /usr/include/bits/stdlib-bsearch.h \
   /usr/include/bits/stdlib-float.h \
   /usr/include/bits/struct_mutex.h \
   /usr/include/bits/struct_rwlock.h \
@@ -181,9 +177,7 @@ CMakeFiles/hash_table.dir/source/main.cpp.o: /home/oleg/projects/HashTable/sourc
   /usr/include/bits/pthreadtypes.h \
   /usr/include/bits/select.h \
   /usr/include/bits/stdint-intn.h \
-  /usr/include/bits/stdio.h \
   /usr/include/bits/stdio_lim.h \
-  /usr/include/bits/stdlib-bsearch.h \
   /usr/include/bits/stdlib-float.h \
   /usr/include/bits/struct_mutex.h \
   /usr/include/bits/struct_rwlock.h \
@@ -234,6 +228,8 @@ CMakeFiles/hash_table.dir/source/main.cpp.o: /home/oleg/projects/HashTable/sourc
   /usr/lib/clang/19/share/asan_ignorelist.txt
 
 CMakeFiles/hash_table.dir/source/text_processing.cpp.o: /home/oleg/projects/HashTable/source/text_processing.cpp \
+  /home/oleg/projects/HashTable/include/hash_table.h \
+  /home/oleg/projects/HashTable/include/list.h \
   /home/oleg/projects/HashTable/include/text_processing.h \
   /usr/include/c++/14.2.1/bits/std_abs.h \
   /usr/include/c++/14.2.1/cstdlib \
@@ -256,9 +252,7 @@ CMakeFiles/hash_table.dir/source/text_processing.cpp.o: /home/oleg/projects/Hash
   /usr/include/bits/pthreadtypes.h \
   /usr/include/bits/select.h \
   /usr/include/bits/stdint-intn.h \
-  /usr/include/bits/stdio.h \
   /usr/include/bits/stdio_lim.h \
-  /usr/include/bits/stdlib-bsearch.h \
   /usr/include/bits/stdlib-float.h \
   /usr/include/bits/struct_mutex.h \
   /usr/include/bits/struct_rwlock.h \
@@ -307,6 +301,7 @@ CMakeFiles/hash_table.dir/source/text_processing.cpp.o: /home/oleg/projects/Hash
   /usr/lib/clang/19/include/__stddef_size_t.h \
   /usr/lib/clang/19/include/__stddef_wchar_t.h \
   /usr/lib/clang/19/include/stdarg.h \
+  /usr/lib/clang/19/include/stdbool.h \
   /usr/lib/clang/19/include/stddef.h \
   /usr/lib/clang/19/share/asan_ignorelist.txt
 
@@ -395,9 +390,7 @@ CMakeFiles/hash_table.dir/source/list.cpp.o:
 
 /usr/include/gnu/stubs.h:
 
-/usr/lib/clang/19/include/__stddef_size_t.h:
-
-/usr/include/features.h:
+/usr/include/bits/thread-shared-types.h:
 
 /usr/include/bits/stdint-intn.h:
 
@@ -411,8 +404,6 @@ CMakeFiles/hash_table.dir/source/list.cpp.o:
 
 /usr/include/bits/floatn.h:
 
-/usr/include/bits/stdlib-bsearch.h:
-
 /usr/include/bits/types/sigset_t.h:
 
 /usr/include/bits/byteswap.h:
@@ -423,10 +414,6 @@ CMakeFiles/hash_table.dir/source/list.cpp.o:
 
 /usr/include/bits/time64.h:
 
-/usr/include/gnu/stubs-64.h:
-
-/home/oleg/projects/HashTable/source/hash_table.cpp:
-
 /usr/include/bits/types/__sigset_t.h:
 
 /usr/lib/clang/19/include/__stddef_wchar_t.h:
@@ -434,8 +421,6 @@ CMakeFiles/hash_table.dir/source/list.cpp.o:
 /usr/include/bits/waitflags.h:
 
 /usr/include/c++/14.2.1/stdlib.h:
-
-/usr/include/bits/stdio.h:
 
 /home/oleg/projects/HashTable/include/list.h:
 
@@ -448,6 +433,10 @@ CMakeFiles/hash_table.dir/source/hash_table.cpp.o:
 /home/oleg/projects/HashTable/source/main.cpp:
 
 /usr/include/bits/struct_mutex.h:
+
+/home/oleg/projects/HashTable/source/hash_table.cpp:
+
+/usr/include/gnu/stubs-64.h:
 
 /usr/include/bits/select.h:
 
@@ -482,8 +471,6 @@ CMakeFiles/hash_table.dir/source/hash_table.cpp.o:
 /usr/include/assert.h:
 
 /usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/c++config.h:
-
-/usr/include/bits/thread-shared-types.h:
 
 /usr/include/bits/endian.h:
 
@@ -562,3 +549,7 @@ CMakeFiles/hash_table.dir/source/text_processing.cpp.o:
 /usr/lib/clang/19/lib/linux/libclang_rt.asan-x86_64.a.syms:
 
 /usr/include/ctype.h:
+
+/usr/lib/clang/19/include/__stddef_size_t.h:
+
+/usr/include/features.h:

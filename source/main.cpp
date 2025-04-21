@@ -6,40 +6,35 @@
 
 int main()
 {
+    char book[256] = {};
+
+    printf("Enter name of file: ");
+    scanf("%s", book);
+
     Text text = {};
-    if (textLoad(&text, "test.txt"))
+    if (textLoad(&text, book))
     {
-        printf("Out\n");
+        fprintf(stderr, "Could not load text\n");
         return 1; 
     }
 
-    char buffer[50] = {};
-    int c = 0;
-    while((c = textNextWord(&text, buffer, sizeof(buffer))))
+    HashTable* hash_table = hashTableCtor();
+
+    char* word_pointer = NULL;
+    int length = 0;
+    while((length = textNextWordPointer(&text, &word_pointer)))
     {
-        printf("%s %d\n", buffer, c);
+        hashTableSet(hash_table, word_pointer, length);
     }
-    
+
+    // HashTableIterator iterator = hashTableIterator(hash_table);    
+    // while (hashTableNext(&iterator))
+    // {        
+    //    printf("%.*s %zu\n", (int)iterator.length, iterator.key, iterator.count);
+    //}
+
+    hashTableDtor(hash_table);
     textDtor(&text);
-
-    const char* name = "Alice";
-
-    HashTable* table = hashTableCtor();
-    hashTableSet(table, "apple", (void*)"RED");
-    hashTableSet(table, "banana", (void*)"YELLOW");
-    hashTableSet(table, "orange", (void*)"ORANGE");
-    hashTableSet(table, "nigga", (void*)"BLACKDKDS");
-
-    hashTableDelete(table, "banana");
-
-
-    HashTableIterator iterator = hashTableIterator(table);
-    while (hashTableNext(&iterator))
-    {
-        printf("key: %s value: %s\n", iterator.key, (char*)iterator.value);
-    }
-
-    hashTableDtor(table);
 
     return 0;
 }

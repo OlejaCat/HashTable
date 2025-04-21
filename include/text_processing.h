@@ -19,7 +19,8 @@ typedef struct Text
 } Text;
 
 TextState textLoad(Text* text, const char* filename);
-int textNextWord(Text* text, char* buffer, size_t buffer_size);
+int textPutNextWordToBuffer(Text* text, char* buffer, size_t buffer_size);
+int textNextWordPointer(Text* text, char** pointer);
 TextState textMoveToBegin(Text* text);
 TextState textDtor(Text* text);
 

@@ -3,7 +3,7 @@ project(hash_table)
 
 set(CMAKE_CXX_FLAGS "--std=c++20 -Wall -Wextra -pedantic")
 
-set(CMAKE_CXX_FLAGS_DEBUG "-O1 -g -fsanitize=address,bool,bounds,enum,float-cast-overflow,float-divide-by-zero,integer-divide-by-zero,leak,nonnull-attribute,null,object-size,return,returns-nonnull-attribute,shift,signed-integer-overflow,undefined,unreachable,vla-bound,vptr")
+set(CMAKE_CXX_FLAGS_DEBUG "-fsanitize=address -g ")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 
 add_executable(${PROJECT_NAME}
