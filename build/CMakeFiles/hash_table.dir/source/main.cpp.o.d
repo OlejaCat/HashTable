@@ -1,5 +1,4 @@
 CMakeFiles/hash_table.dir/source/main.cpp.o: \
-  /usr/lib/clang/19/share/asan_ignorelist.txt \
   /home/oleg/projects/HashTable/source/main.cpp /usr/include/stdio.h \
   /usr/include/bits/libc-header-start.h /usr/include/features.h \
   /usr/include/features-time64.h /usr/include/bits/wordsize.h \
@@ -18,7 +17,7 @@ CMakeFiles/hash_table.dir/source/main.cpp.o: \
   /usr/include/bits/types/FILE.h /usr/include/bits/types/struct_FILE.h \
   /usr/include/bits/types/cookie_io_functions_t.h \
   /usr/include/bits/stdio_lim.h /usr/include/bits/floatn.h \
-  /usr/include/bits/floatn-common.h \
+  /usr/include/bits/floatn-common.h /usr/include/bits/stdio.h \
   /home/oleg/projects/HashTable/include/text_processing.h \
   /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/14.2.1/../../../../include/c++/14.2.1/stdlib.h \
   /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/14.2.1/../../../../include/c++/14.2.1/cstdlib \
@@ -45,7 +44,8 @@ CMakeFiles/hash_table.dir/source/main.cpp.o: \
   /usr/include/bits/pthreadtypes-arch.h \
   /usr/include/bits/atomic_wide_counter.h \
   /usr/include/bits/struct_mutex.h /usr/include/bits/struct_rwlock.h \
-  /usr/include/alloca.h /usr/include/bits/stdlib-float.h \
+  /usr/include/alloca.h /usr/include/bits/stdlib-bsearch.h \
+  /usr/include/bits/stdlib-float.h \
   /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/14.2.1/../../../../include/c++/14.2.1/bits/std_abs.h \
   /home/oleg/projects/HashTable/include/hash_table.h \
   /usr/lib/clang/19/include/stdbool.h \

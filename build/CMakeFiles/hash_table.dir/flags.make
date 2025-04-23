@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/home/oleg/projects/HashTable/include
 
-CXX_FLAGS = --std=c++20 -Wall -Wextra -pedantic -fsanitize=address -g 
+CXX_FLAGS = --std=c++20 -Wall -Wextra -pedantic -mavx2 -march=native -O2 -g
 

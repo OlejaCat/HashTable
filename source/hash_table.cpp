@@ -111,18 +111,22 @@ const char* hashTableSet(HashTable* table, const char* key, size_t length)
 
     size_t index = hashFunction(key, length, table->capacity);
     List* list = &table->buckets[index];
-    Node* node_array = list->node_array;
-
-    size_t current_index = node_array[0].next;
-    while (current_index != 0)
+    if (list->size != 0)
     {
-        Node* node = &node_array[current_index];
-        if (!memcmp(node->key_pointer, key, length))
+        Node* node_array = list->node_array;
+
+        size_t current_index = node_array[0].next;
+        while (current_index != 0)
         {
-            node->count++;
-            return node->key_pointer;
+            NodeData* node_data = &list->data[current_index];
+            Node* node = &node_array[current_index];
+            if (!memcmp(node_data->key_pointer, key, length))
+            {
+                node_data->count++;
+                return node_data->key_pointer;
+            }
+            current_index = node->next;
         }
-        current_index = node->next;
     }
 
     int new_node_index = listInsertTail(list);
@@ -132,7 +136,8 @@ const char* hashTableSet(HashTable* table, const char* key, size_t length)
         return NULL;
     }
 
-    Node* new_node = &node_array[new_node_index];
+    NodeData* new_node = &list->data[new_node_index];
+
     new_node->key_pointer = key;
     new_node->length      = length;
     new_node->count       = 1; 
@@ -155,7 +160,8 @@ HashTableOperationError hashTableDelete(HashTable* table, const char* key, size_
     while (current_index != 0)
     {
         Node* node = &node_array[current_index];
-        if (!memcmp(node->key_pointer, key, length))
+        NodeData* node_data = &list->data[current_index];
+        if (!memcmp(node_data->key_pointer, key, length))
         {
             listDeleteElement(list, current_index);
             break;
@@ -175,15 +181,17 @@ size_t hashTableGet(HashTable* table, const char* key, size_t length)
     assert(key   != NULL);
 
     size_t index = hashFunction(key, length, table->capacity);
-    Node* node_array = table->buckets[index].node_array;
+    List* list = &table->buckets[index];
+    Node* node_array = list->node_array;
 
     size_t current_index = node_array[0].next;
     while (current_index != 0)
     {
         Node* node = &node_array[current_index];
-        if (!memcmp(node->key_pointer, key, length))
+        NodeData* node_data = &list->data[current_index];
+        if (!memcmp(node_data->key_pointer, key, length))
         {
-            return node->count;
+            return node_data->count;
         }
         current_index = node->next;
     }
@@ -222,7 +230,7 @@ bool hashTableNext(HashTableIterator* iterator)
 
         if (iterator->_node_index != 0)
         {
-            Node* node = &node_array[iterator->_node_index];
+            NodeData* node = &list->data[iterator->_node_index];
 
             iterator->key    = node->key_pointer;
             iterator->length = node->length;
@@ -280,8 +288,9 @@ static HashTableOperationError hashTableResize(HashTable* table)
         while (current_index != 0)
         {
             Node* node = &node_array[current_index];
+            NodeData* node_data = &list->data[current_index];
 
-            size_t new_index = hashFunction(node->key_pointer, node->length, table->capacity);
+            size_t new_index = hashFunction(node_data->key_pointer, node_data->length, table->capacity);
             List* new_list = &new_buckets[new_index];
             
             int list_index = listInsertTail(new_list);
@@ -298,11 +307,11 @@ static HashTableOperationError hashTableResize(HashTable* table)
                 return HASH_TABLE_BAD_MEMORY_ALLOCATION;
             }
 
-            Node* new_node = &new_list->node_array[list_index];
+            NodeData* new_node_data = &new_list->data[list_index];
 
-            new_node->key_pointer = node->key_pointer;
-            new_node->length      = node->length;
-            new_node->count       = node->count;
+            new_node_data->key_pointer = node_data->key_pointer;
+            new_node_data->length      = node_data->length;
+            new_node_data->count       = node_data->count;
 
             current_index = node->next;
         }

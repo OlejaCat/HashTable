@@ -2,6 +2,9 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <immintrin.h>
 #include <assert.h>
 
 
@@ -25,20 +28,33 @@ ListOperationError listCtor(List* list, size_t capacity)
 
     list->capacity = capacity;
 
-    list->node_array = (Node*)calloc(capacity + 1, sizeof(Node));
+    list->node_array = (Node*)aligned_alloc(32, (capacity + 1) * sizeof(Node));
     if (list->node_array == NULL)
     {
         fprintf(stderr, "Error allocating node array for list\n");
         return ListOperationError_ERROR;
     }
 
-    list->node_array[0].next = 0;
-    list->node_array[0].prev = 0; 
-
-    for (size_t index = 1; index <= capacity; index++)
+    list->data = (NodeData*)calloc(capacity + 1, sizeof(NodeData));
+    if (list->data == NULL)
     {
-        list->node_array[index].next = index + 1;
-        list->node_array[index].prev = 0;
+        fprintf(stderr, "Error while allocating data for nodes\n");
+        return ListOperationError_ERROR;
+    }
+
+    list->node_array[0].next = 0;
+    list->node_array[0].prev = 0;
+
+    int index = 1;
+    int simd_size = 4;
+    for (; index  < (int)(capacity - simd_size + 1); index += simd_size)
+    {
+        __m256i next = _mm256_setr_epi32(
+            index + 1, 0, index + 2, 0, index + 3, 0, index + 4, 0
+        );
+
+
+        _mm256_storeu_si256((__m256i*)(list->node_array + index), next);
     }
 
     list->free_node = 1;
@@ -56,6 +72,7 @@ ListOperationError listDtor(List* list)
     }
 
     free(list->node_array);
+    free(list->data);
 
     return ListOperationError_SUCCESS;
 }
@@ -64,7 +81,7 @@ ListOperationError listDtor(List* list)
 // -------------------------------  INDEX OPERATIONS -------------------------------
 
 
-size_t getNextIndex(List* list, size_t index)
+int getNextIndex(List* list, int index)
 {
     assert(list != NULL);
 
@@ -72,7 +89,7 @@ size_t getNextIndex(List* list, size_t index)
 }
 
 
-size_t getPreviousIndex(List* list, size_t index)
+int getPreviousIndex(List* list, int index)
 {
     assert(list != NULL);
 
@@ -83,17 +100,16 @@ size_t getPreviousIndex(List* list, size_t index)
 // -------------------------------  INSERT OPERATIONS  -------------------------------
 
 
-int listInsert(List* list, size_t index)
+int listInsert(List* list, int index)
 {
     assert(list != NULL);
 
-    if (index > list->capacity)
+    if (index > (int)list->capacity)
     {
-        return ListOperationError_ERROR;
+        return 0;
     }
 
-    if (list->free_node == 0
-     || list->free_node >= list->capacity)
+    if (list->free_node >= (int)list->capacity)
     {
         if (listResize(list) != ListOperationError_SUCCESS)
         {
@@ -102,13 +118,12 @@ int listInsert(List* list, size_t index)
         }
     }
 
+    int real_index = list->free_node;
 
-    size_t real_index = list->free_node;
-
-    assert(real_index <= list->capacity);
+    assert(real_index <= (int)list->capacity);
     list->free_node = list->node_array[real_index].next;
 
-    assert(list->node_array[real_index].next <= list->capacity);
+    assert(list->node_array[real_index].next <= (int)list->capacity);
     list->node_array[real_index].next = list->node_array[index].next;
     list->node_array[real_index].prev = index;
 
@@ -140,11 +155,11 @@ int listInsertTail(List* list)
 // ------------------------------- DELETE ELEMENTS -------------------------------
 
 
-ListOperationError listDeleteElement(List* list, size_t index)
+ListOperationError listDeleteElement(List* list, int index)
 {
     assert(list != NULL);
 
-    if (index > list->capacity)
+    if (index > (int)list->capacity)
     {
         return ListOperationError_ERROR; 
     }

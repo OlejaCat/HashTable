@@ -25,7 +25,9 @@ CMakeFiles/hash_table.dir/source/hash_table.cpp.o: /home/oleg/projects/HashTable
   /usr/include/bits/pthreadtypes.h \
   /usr/include/bits/select.h \
   /usr/include/bits/stdint-intn.h \
+  /usr/include/bits/stdio.h \
   /usr/include/bits/stdio_lim.h \
+  /usr/include/bits/stdlib-bsearch.h \
   /usr/include/bits/stdlib-float.h \
   /usr/include/bits/struct_mutex.h \
   /usr/include/bits/struct_rwlock.h \
@@ -75,8 +77,7 @@ CMakeFiles/hash_table.dir/source/hash_table.cpp.o: /home/oleg/projects/HashTable
   /usr/lib/clang/19/include/__stddef_wchar_t.h \
   /usr/lib/clang/19/include/stdarg.h \
   /usr/lib/clang/19/include/stdbool.h \
-  /usr/lib/clang/19/include/stddef.h \
-  /usr/lib/clang/19/share/asan_ignorelist.txt
+  /usr/lib/clang/19/include/stddef.h
 
 CMakeFiles/hash_table.dir/source/list.cpp.o: /home/oleg/projects/HashTable/source/list.cpp \
   /home/oleg/projects/HashTable/include/list.h \
@@ -101,7 +102,11 @@ CMakeFiles/hash_table.dir/source/list.cpp.o: /home/oleg/projects/HashTable/sourc
   /usr/include/bits/pthreadtypes.h \
   /usr/include/bits/select.h \
   /usr/include/bits/stdint-intn.h \
+  /usr/include/bits/stdint-least.h \
+  /usr/include/bits/stdint-uintn.h \
+  /usr/include/bits/stdio.h \
   /usr/include/bits/stdio_lim.h \
+  /usr/include/bits/stdlib-bsearch.h \
   /usr/include/bits/stdlib-float.h \
   /usr/include/bits/struct_mutex.h \
   /usr/include/bits/struct_rwlock.h \
@@ -130,6 +135,7 @@ CMakeFiles/hash_table.dir/source/list.cpp.o: /home/oleg/projects/HashTable/sourc
   /usr/include/bits/uintn-identity.h \
   /usr/include/bits/waitflags.h \
   /usr/include/bits/waitstatus.h \
+  /usr/include/bits/wchar.h \
   /usr/include/bits/wordsize.h \
   /usr/include/endian.h \
   /usr/include/features-time64.h \
@@ -137,6 +143,7 @@ CMakeFiles/hash_table.dir/source/list.cpp.o: /home/oleg/projects/HashTable/sourc
   /usr/include/gnu/stubs-64.h \
   /usr/include/gnu/stubs.h \
   /usr/include/stdc-predef.h \
+  /usr/include/stdint.h \
   /usr/include/stdio.h \
   /usr/include/stdlib.h \
   /usr/include/string.h \
@@ -148,10 +155,104 @@ CMakeFiles/hash_table.dir/source/list.cpp.o: /home/oleg/projects/HashTable/sourc
   /usr/lib/clang/19/include/__stddef_null.h \
   /usr/lib/clang/19/include/__stddef_size_t.h \
   /usr/lib/clang/19/include/__stddef_wchar_t.h \
+  /usr/lib/clang/19/include/__wmmintrin_aes.h \
+  /usr/lib/clang/19/include/__wmmintrin_pclmul.h \
+  /usr/lib/clang/19/include/adcintrin.h \
+  /usr/lib/clang/19/include/adxintrin.h \
+  /usr/lib/clang/19/include/amxcomplexintrin.h \
+  /usr/lib/clang/19/include/amxfp16intrin.h \
+  /usr/lib/clang/19/include/amxintrin.h \
+  /usr/lib/clang/19/include/avx2intrin.h \
+  /usr/lib/clang/19/include/avx512bf16intrin.h \
+  /usr/lib/clang/19/include/avx512bitalgintrin.h \
+  /usr/lib/clang/19/include/avx512bwintrin.h \
+  /usr/lib/clang/19/include/avx512cdintrin.h \
+  /usr/lib/clang/19/include/avx512dqintrin.h \
+  /usr/lib/clang/19/include/avx512fintrin.h \
+  /usr/lib/clang/19/include/avx512fp16intrin.h \
+  /usr/lib/clang/19/include/avx512ifmaintrin.h \
+  /usr/lib/clang/19/include/avx512ifmavlintrin.h \
+  /usr/lib/clang/19/include/avx512vbmi2intrin.h \
+  /usr/lib/clang/19/include/avx512vbmiintrin.h \
+  /usr/lib/clang/19/include/avx512vbmivlintrin.h \
+  /usr/lib/clang/19/include/avx512vlbf16intrin.h \
+  /usr/lib/clang/19/include/avx512vlbitalgintrin.h \
+  /usr/lib/clang/19/include/avx512vlbwintrin.h \
+  /usr/lib/clang/19/include/avx512vlcdintrin.h \
+  /usr/lib/clang/19/include/avx512vldqintrin.h \
+  /usr/lib/clang/19/include/avx512vlfp16intrin.h \
+  /usr/lib/clang/19/include/avx512vlintrin.h \
+  /usr/lib/clang/19/include/avx512vlvbmi2intrin.h \
+  /usr/lib/clang/19/include/avx512vlvnniintrin.h \
+  /usr/lib/clang/19/include/avx512vlvp2intersectintrin.h \
+  /usr/lib/clang/19/include/avx512vnniintrin.h \
+  /usr/lib/clang/19/include/avx512vp2intersectintrin.h \
+  /usr/lib/clang/19/include/avx512vpopcntdqintrin.h \
+  /usr/lib/clang/19/include/avx512vpopcntdqvlintrin.h \
+  /usr/lib/clang/19/include/avxifmaintrin.h \
+  /usr/lib/clang/19/include/avxintrin.h \
+  /usr/lib/clang/19/include/avxneconvertintrin.h \
+  /usr/lib/clang/19/include/avxvnniint16intrin.h \
+  /usr/lib/clang/19/include/avxvnniint8intrin.h \
+  /usr/lib/clang/19/include/avxvnniintrin.h \
+  /usr/lib/clang/19/include/bmi2intrin.h \
+  /usr/lib/clang/19/include/bmiintrin.h \
+  /usr/lib/clang/19/include/cetintrin.h \
+  /usr/lib/clang/19/include/cldemoteintrin.h \
+  /usr/lib/clang/19/include/clflushoptintrin.h \
+  /usr/lib/clang/19/include/clwbintrin.h \
+  /usr/lib/clang/19/include/cmpccxaddintrin.h \
+  /usr/lib/clang/19/include/crc32intrin.h \
+  /usr/lib/clang/19/include/emmintrin.h \
+  /usr/lib/clang/19/include/enqcmdintrin.h \
+  /usr/lib/clang/19/include/f16cintrin.h \
+  /usr/lib/clang/19/include/fmaintrin.h \
+  /usr/lib/clang/19/include/fxsrintrin.h \
+  /usr/lib/clang/19/include/gfniintrin.h \
+  /usr/lib/clang/19/include/hresetintrin.h \
+  /usr/lib/clang/19/include/immintrin.h \
+  /usr/lib/clang/19/include/invpcidintrin.h \
+  /usr/lib/clang/19/include/keylockerintrin.h \
+  /usr/lib/clang/19/include/lzcntintrin.h \
+  /usr/lib/clang/19/include/mm_malloc.h \
+  /usr/lib/clang/19/include/mmintrin.h \
+  /usr/lib/clang/19/include/movdirintrin.h \
+  /usr/lib/clang/19/include/pconfigintrin.h \
+  /usr/lib/clang/19/include/pkuintrin.h \
+  /usr/lib/clang/19/include/pmmintrin.h \
+  /usr/lib/clang/19/include/popcntintrin.h \
+  /usr/lib/clang/19/include/prfchiintrin.h \
+  /usr/lib/clang/19/include/ptwriteintrin.h \
+  /usr/lib/clang/19/include/raointintrin.h \
+  /usr/lib/clang/19/include/rdseedintrin.h \
+  /usr/lib/clang/19/include/rtmintrin.h \
+  /usr/lib/clang/19/include/serializeintrin.h \
+  /usr/lib/clang/19/include/sgxintrin.h \
+  /usr/lib/clang/19/include/sha512intrin.h \
+  /usr/lib/clang/19/include/shaintrin.h \
+  /usr/lib/clang/19/include/sm3intrin.h \
+  /usr/lib/clang/19/include/sm4intrin.h \
+  /usr/lib/clang/19/include/smmintrin.h \
   /usr/lib/clang/19/include/stdarg.h \
   /usr/lib/clang/19/include/stdbool.h \
   /usr/lib/clang/19/include/stddef.h \
-  /usr/lib/clang/19/share/asan_ignorelist.txt
+  /usr/lib/clang/19/include/stdint.h \
+  /usr/lib/clang/19/include/tmmintrin.h \
+  /usr/lib/clang/19/include/tsxldtrkintrin.h \
+  /usr/lib/clang/19/include/uintrintrin.h \
+  /usr/lib/clang/19/include/usermsrintrin.h \
+  /usr/lib/clang/19/include/vaesintrin.h \
+  /usr/lib/clang/19/include/vpclmulqdqintrin.h \
+  /usr/lib/clang/19/include/waitpkgintrin.h \
+  /usr/lib/clang/19/include/wbnoinvdintrin.h \
+  /usr/lib/clang/19/include/wmmintrin.h \
+  /usr/lib/clang/19/include/x86gprintrin.h \
+  /usr/lib/clang/19/include/xmmintrin.h \
+  /usr/lib/clang/19/include/xsavecintrin.h \
+  /usr/lib/clang/19/include/xsaveintrin.h \
+  /usr/lib/clang/19/include/xsaveoptintrin.h \
+  /usr/lib/clang/19/include/xsavesintrin.h \
+  /usr/lib/clang/19/include/xtestintrin.h
 
 CMakeFiles/hash_table.dir/source/main.cpp.o: /home/oleg/projects/HashTable/source/main.cpp \
   /home/oleg/projects/HashTable/include/hash_table.h \
@@ -177,7 +278,9 @@ CMakeFiles/hash_table.dir/source/main.cpp.o: /home/oleg/projects/HashTable/sourc
   /usr/include/bits/pthreadtypes.h \
   /usr/include/bits/select.h \
   /usr/include/bits/stdint-intn.h \
+  /usr/include/bits/stdio.h \
   /usr/include/bits/stdio_lim.h \
+  /usr/include/bits/stdlib-bsearch.h \
   /usr/include/bits/stdlib-float.h \
   /usr/include/bits/struct_mutex.h \
   /usr/include/bits/struct_rwlock.h \
@@ -224,8 +327,7 @@ CMakeFiles/hash_table.dir/source/main.cpp.o: /home/oleg/projects/HashTable/sourc
   /usr/lib/clang/19/include/__stddef_wchar_t.h \
   /usr/lib/clang/19/include/stdarg.h \
   /usr/lib/clang/19/include/stdbool.h \
-  /usr/lib/clang/19/include/stddef.h \
-  /usr/lib/clang/19/share/asan_ignorelist.txt
+  /usr/lib/clang/19/include/stddef.h
 
 CMakeFiles/hash_table.dir/source/text_processing.cpp.o: /home/oleg/projects/HashTable/source/text_processing.cpp \
   /home/oleg/projects/HashTable/include/hash_table.h \
@@ -252,7 +354,9 @@ CMakeFiles/hash_table.dir/source/text_processing.cpp.o: /home/oleg/projects/Hash
   /usr/include/bits/pthreadtypes.h \
   /usr/include/bits/select.h \
   /usr/include/bits/stdint-intn.h \
+  /usr/include/bits/stdio.h \
   /usr/include/bits/stdio_lim.h \
+  /usr/include/bits/stdlib-bsearch.h \
   /usr/include/bits/stdlib-float.h \
   /usr/include/bits/struct_mutex.h \
   /usr/include/bits/struct_rwlock.h \
@@ -302,29 +406,19 @@ CMakeFiles/hash_table.dir/source/text_processing.cpp.o: /home/oleg/projects/Hash
   /usr/lib/clang/19/include/__stddef_wchar_t.h \
   /usr/lib/clang/19/include/stdarg.h \
   /usr/lib/clang/19/include/stdbool.h \
-  /usr/lib/clang/19/include/stddef.h \
-  /usr/lib/clang/19/share/asan_ignorelist.txt
+  /usr/lib/clang/19/include/stddef.h
 
 hash_table: /usr/lib64/Scrt1.o \
   /usr/lib64/crti.o \
   /usr/lib64/crtn.o \
   /usr/lib64/libc.so \
-  /usr/lib64/libdl.a \
   /usr/lib64/libgcc_s.so \
   /usr/lib64/libgcc_s.so.1 \
   /usr/lib64/libm.so \
-  /usr/lib64/libpthread.a \
-  /usr/lib64/libresolv.so \
-  /usr/lib64/librt.a \
   /usr/lib64/libstdc++.so \
   /usr/lib64/gcc/x86_64-pc-linux-gnu/14.2.1/crtbeginS.o \
   /usr/lib64/gcc/x86_64-pc-linux-gnu/14.2.1/crtendS.o \
   /usr/lib64/gcc/x86_64-pc-linux-gnu/14.2.1/libgcc.a \
-  /usr/lib/clang/19/lib/linux/libclang_rt.asan-x86_64.a \
-  /usr/lib/clang/19/lib/linux/libclang_rt.asan-x86_64.a.syms \
-  /usr/lib/clang/19/lib/linux/libclang_rt.asan_cxx-x86_64.a \
-  /usr/lib/clang/19/lib/linux/libclang_rt.asan_cxx-x86_64.a.syms \
-  /usr/lib/clang/19/lib/linux/libclang_rt.asan_static-x86_64.a \
   /usr/lib/ld-linux-x86-64.so.2 \
   /usr/lib/libc.so.6 \
   /usr/lib/libc_nonshared.a \
@@ -336,220 +430,402 @@ hash_table: /usr/lib64/Scrt1.o \
   CMakeFiles/hash_table.dir/source/text_processing.cpp.o
 
 
-/usr/lib/libmvec.so.1:
-
-/usr/lib/ld-linux-x86-64.so.2:
-
-/usr/lib/clang/19/lib/linux/libclang_rt.asan_static-x86_64.a:
-
-/usr/lib/libc.so.6:
-
-/usr/lib/clang/19/lib/linux/libclang_rt.asan-x86_64.a:
-
-/usr/lib64/gcc/x86_64-pc-linux-gnu/14.2.1/libgcc.a:
-
-/usr/lib64/gcc/x86_64-pc-linux-gnu/14.2.1/crtbeginS.o:
-
-/usr/lib64/libpthread.a:
-
-/usr/lib64/libm.so:
-
-/usr/lib64/libgcc_s.so.1:
-
-/usr/lib/clang/19/lib/linux/libclang_rt.asan_cxx-x86_64.a.syms:
-
-/usr/lib64/libdl.a:
-
-/usr/lib64/crti.o:
-
-/usr/lib64/Scrt1.o:
-
-/usr/lib/clang/19/share/asan_ignorelist.txt:
+CMakeFiles/hash_table.dir/source/text_processing.cpp.o:
 
 CMakeFiles/hash_table.dir/source/main.cpp.o:
 
-/usr/lib/clang/19/include/stddef.h:
+CMakeFiles/hash_table.dir/source/hash_table.cpp.o:
 
-/usr/lib/clang/19/include/stdarg.h:
-
-/usr/lib/clang/19/include/__stdarg___gnuc_va_list.h:
-
-/usr/include/sys/types.h:
+/usr/lib/libmvec.so.1:
 
 /usr/lib/libm.so.6:
 
-/usr/include/sys/select.h:
+/usr/lib/libc.so.6:
 
-/usr/include/sys/cdefs.h:
+/usr/lib64/gcc/x86_64-pc-linux-gnu/14.2.1/libgcc.a:
 
-CMakeFiles/hash_table.dir/source/list.cpp.o:
+/usr/lib64/gcc/x86_64-pc-linux-gnu/14.2.1/crtendS.o:
 
-/usr/include/strings.h:
+/usr/lib64/gcc/x86_64-pc-linux-gnu/14.2.1/crtbeginS.o:
 
-/usr/include/stdlib.h:
+/usr/lib64/libstdc++.so:
 
-/usr/include/gnu/stubs.h:
+/usr/lib64/libm.so:
 
-/usr/include/bits/thread-shared-types.h:
-
-/usr/include/bits/stdint-intn.h:
-
-/usr/include/stdc-predef.h:
-
-/usr/include/bits/pthreadtypes-arch.h:
-
-/usr/include/bits/libc-header-start.h:
-
-/usr/include/bits/pthreadtypes.h:
-
-/usr/include/bits/floatn.h:
-
-/usr/include/bits/types/sigset_t.h:
-
-/usr/include/bits/byteswap.h:
+/usr/lib64/libgcc_s.so:
 
 /usr/lib64/libc.so:
 
-/usr/include/string.h:
+/home/oleg/projects/HashTable/source/text_processing.cpp:
 
-/usr/include/bits/time64.h:
+/usr/lib/clang/19/include/xtestintrin.h:
 
-/usr/include/bits/types/__sigset_t.h:
+/usr/lib/clang/19/include/xsavesintrin.h:
 
-/usr/lib/clang/19/include/__stddef_wchar_t.h:
+/usr/lib/clang/19/include/xsaveoptintrin.h:
 
-/usr/include/bits/waitflags.h:
+/usr/lib/clang/19/include/xsaveintrin.h:
 
-/usr/include/c++/14.2.1/stdlib.h:
+/usr/lib/clang/19/include/xsavecintrin.h:
 
-/home/oleg/projects/HashTable/include/list.h:
+/usr/lib/clang/19/include/x86gprintrin.h:
 
-CMakeFiles/hash_table.dir/source/hash_table.cpp.o:
+/usr/lib/clang/19/include/wmmintrin.h:
 
-/usr/include/bits/stdio_lim.h:
+/usr/lib/clang/19/include/wbnoinvdintrin.h:
+
+/usr/lib/clang/19/include/usermsrintrin.h:
+
+/usr/lib/clang/19/include/tsxldtrkintrin.h:
+
+/usr/lib64/libgcc_s.so.1:
+
+/usr/lib/clang/19/include/tmmintrin.h:
+
+/usr/lib/clang/19/include/stdint.h:
+
+/usr/lib/clang/19/include/smmintrin.h:
+
+/usr/lib/clang/19/include/sm4intrin.h:
+
+/usr/lib/clang/19/include/sm3intrin.h:
+
+/usr/lib/clang/19/include/serializeintrin.h:
+
+/usr/lib/libc_nonshared.a:
+
+/usr/lib/clang/19/include/rdseedintrin.h:
+
+/usr/lib/clang/19/include/raointintrin.h:
+
+/usr/lib/clang/19/include/popcntintrin.h:
+
+/usr/lib/clang/19/include/pkuintrin.h:
+
+/usr/lib/clang/19/include/pconfigintrin.h:
+
+/usr/lib/clang/19/include/mmintrin.h:
+
+/usr/lib/clang/19/include/mm_malloc.h:
+
+/usr/lib64/crtn.o:
+
+/usr/lib/clang/19/include/keylockerintrin.h:
+
+/usr/lib/clang/19/include/invpcidintrin.h:
+
+/usr/lib/clang/19/include/immintrin.h:
+
+/usr/lib/clang/19/include/hresetintrin.h:
+
+/usr/lib/clang/19/include/gfniintrin.h:
+
+/usr/lib/clang/19/include/fmaintrin.h:
+
+/usr/include/endian.h:
+
+/usr/include/bits/stdint-uintn.h:
+
+/usr/include/bits/types/timer_t.h:
+
+/usr/include/stdio.h:
+
+/usr/include/bits/types/time_t.h:
+
+/usr/lib/clang/19/include/cmpccxaddintrin.h:
+
+/usr/include/bits/types/struct_timespec.h:
+
+/usr/lib/clang/19/include/sgxintrin.h:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/bits/uintn-identity.h:
+
+/usr/include/bits/types/clockid_t.h:
+
+/usr/include/bits/atomic_wide_counter.h:
+
+/usr/include/bits/types/__locale_t.h:
+
+/home/oleg/projects/HashTable/source/list.cpp:
+
+/usr/include/bits/types/clock_t.h:
+
+/usr/include/bits/types/__fpos_t.h:
+
+CMakeFiles/hash_table.dir/source/list.cpp.o:
+
+/usr/lib/clang/19/include/__stddef_null.h:
+
+/usr/lib/clang/19/include/vpclmulqdqintrin.h:
+
+/usr/lib/clang/19/include/avx512bf16intrin.h:
+
+/usr/include/bits/types/__FILE.h:
+
+/usr/lib/clang/19/include/__wmmintrin_aes.h:
+
+/usr/include/bits/waitstatus.h:
+
+/usr/include/bits/timesize.h:
+
+/usr/include/bits/endian.h:
+
+/usr/include/bits/thread-shared-types.h:
+
+/usr/lib/ld-linux-x86-64.so.2:
+
+/usr/include/assert.h:
+
+/usr/include/c++/14.2.1/pstl/pstl_config.h:
+
+/usr/lib/clang/19/include/avx512vlbf16intrin.h:
+
+/usr/lib/clang/19/include/ptwriteintrin.h:
+
+/usr/lib/clang/19/include/avx512vbmivlintrin.h:
+
+/usr/include/alloca.h:
+
+/usr/lib/clang/19/include/crc32intrin.h:
+
+/usr/include/bits/types/struct_FILE.h:
+
+/usr/lib/clang/19/include/avx512fp16intrin.h:
+
+/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/cpu_defines.h:
+
+/usr/lib/clang/19/include/fxsrintrin.h:
+
+/usr/include/bits/floatn-common.h:
+
+/usr/lib64/crti.o:
+
+/usr/lib/clang/19/include/lzcntintrin.h:
+
+/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/c++config.h:
+
+/usr/lib/clang/19/include/stdbool.h:
+
+/usr/lib/clang/19/include/movdirintrin.h:
+
+/usr/include/c++/14.2.1/bits/std_abs.h:
+
+/usr/include/bits/wchar.h:
+
+/usr/include/c++/14.2.1/cstdlib:
+
+/usr/lib/clang/19/include/shaintrin.h:
+
+/usr/include/features-time64.h:
+
+/usr/include/bits/types/__fpos64_t.h:
+
+/usr/include/bits/struct_mutex.h:
 
 /usr/include/bits/types/struct_timeval.h:
 
-/home/oleg/projects/HashTable/source/main.cpp:
+/usr/include/bits/types/__mbstate_t.h:
 
-/usr/include/bits/struct_mutex.h:
+/usr/include/bits/stdio_lim.h:
+
+/usr/lib/clang/19/include/uintrintrin.h:
+
+/usr/lib/clang/19/include/enqcmdintrin.h:
+
+/home/oleg/projects/HashTable/include/list.h:
+
+/usr/lib/clang/19/include/avxneconvertintrin.h:
+
+/usr/lib/clang/19/include/avx512vlbwintrin.h:
+
+/usr/lib/clang/19/include/amxintrin.h:
+
+/usr/include/bits/stdio.h:
+
+/usr/lib/clang/19/include/avx512vnniintrin.h:
+
+/usr/include/c++/14.2.1/stdlib.h:
+
+/usr/include/ctype.h:
+
+/usr/include/bits/waitflags.h:
+
+/usr/lib/clang/19/include/__stddef_wchar_t.h:
+
+/usr/lib/clang/19/include/cetintrin.h:
+
+/usr/include/bits/types/__sigset_t.h:
 
 /home/oleg/projects/HashTable/source/hash_table.cpp:
 
 /usr/include/gnu/stubs-64.h:
 
-/usr/include/bits/select.h:
-
-/usr/include/bits/types/__fpos64_t.h:
-
-/usr/include/features-time64.h:
-
-/usr/include/c++/14.2.1/cstdlib:
-
-/usr/include/bits/endianness.h:
-
-/usr/lib64/libgcc_s.so:
-
-/usr/include/bits/long-double.h:
-
-/usr/include/c++/14.2.1/bits/std_abs.h:
-
-/usr/lib/clang/19/include/stdbool.h:
-
-/usr/include/bits/floatn-common.h:
-
-/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/cpu_defines.h:
-
-/usr/lib64/gcc/x86_64-pc-linux-gnu/14.2.1/crtendS.o:
-
-/usr/include/alloca.h:
-
-/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/os_defines.h:
-
-/usr/lib64/librt.a:
-
-/usr/include/assert.h:
-
-/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/c++config.h:
-
-/usr/include/bits/endian.h:
-
-/usr/include/bits/timesize.h:
-
-CMakeFiles/hash_table.dir/source/text_processing.cpp.o:
-
-/usr/lib/libc_nonshared.a:
-
-/usr/include/bits/types.h:
-
-/home/oleg/projects/HashTable/include/hash_table.h:
-
-/usr/include/bits/types/FILE.h:
+/usr/lib/clang/19/include/avx512vlbitalgintrin.h:
 
 /usr/include/bits/stdlib-float.h:
 
-/usr/include/bits/types/__FILE.h:
+/usr/include/bits/time64.h:
 
-/usr/lib/clang/19/include/__stddef_null.h:
+/usr/include/string.h:
 
-/usr/include/bits/types/__fpos_t.h:
+/usr/include/c++/14.2.1/x86_64-pc-linux-gnu/bits/os_defines.h:
 
-/usr/lib/clang/19/lib/linux/libclang_rt.asan_cxx-x86_64.a:
+/usr/include/bits/byteswap.h:
 
-/usr/include/bits/wordsize.h:
+/usr/lib/clang/19/include/avx512bitalgintrin.h:
 
-/home/oleg/projects/HashTable/include/text_processing.h:
+/usr/include/bits/types/sigset_t.h:
 
-/home/oleg/projects/HashTable/source/list.cpp:
+/usr/include/bits/stdlib-bsearch.h:
 
-/usr/include/bits/types/__locale_t.h:
+/usr/lib/clang/19/include/prfchiintrin.h:
 
-/usr/lib64/libstdc++.so:
-
-/usr/include/bits/types/__mbstate_t.h:
-
-/usr/include/bits/types/clock_t.h:
-
-/usr/lib64/crtn.o:
-
-/usr/include/bits/atomic_wide_counter.h:
-
-/usr/include/bits/types/clockid_t.h:
-
-/usr/include/bits/uintn-identity.h:
-
-/usr/include/bits/typesizes.h:
+/usr/include/bits/floatn.h:
 
 /usr/include/bits/types/locale_t.h:
 
-/home/oleg/projects/HashTable/source/text_processing.cpp:
+/usr/lib/clang/19/include/avx512vlcdintrin.h:
 
-/usr/include/c++/14.2.1/pstl/pstl_config.h:
+/usr/include/bits/pthreadtypes.h:
 
-/usr/include/bits/types/struct_FILE.h:
+/usr/include/bits/libc-header-start.h:
 
-/usr/include/bits/types/struct_timespec.h:
+/usr/lib/clang/19/include/clflushoptintrin.h:
 
-/usr/include/bits/struct_rwlock.h:
+/usr/include/stdc-predef.h:
 
-/usr/include/bits/types/time_t.h:
+/usr/lib/clang/19/include/avx512vbmiintrin.h:
 
-/usr/include/stdio.h:
+/usr/include/bits/stdint-intn.h:
 
-/usr/include/bits/types/timer_t.h:
+/usr/lib/clang/19/include/waitpkgintrin.h:
 
-/usr/lib64/libresolv.so:
+/usr/lib/clang/19/include/avx512vldqintrin.h:
 
-/usr/include/bits/types/cookie_io_functions_t.h:
+/usr/lib/clang/19/include/avxvnniintrin.h:
 
-/usr/include/endian.h:
+/usr/include/bits/endianness.h:
 
-/usr/include/bits/waitstatus.h:
-
-/usr/lib/clang/19/lib/linux/libclang_rt.asan-x86_64.a.syms:
-
-/usr/include/ctype.h:
+/usr/include/features.h:
 
 /usr/lib/clang/19/include/__stddef_size_t.h:
 
-/usr/include/features.h:
+/usr/include/bits/pthreadtypes-arch.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/strings.h:
+
+/home/oleg/projects/HashTable/include/text_processing.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/lib/clang/19/include/avx512dqintrin.h:
+
+/usr/lib/clang/19/include/__stdarg___gnuc_va_list.h:
+
+/usr/lib/clang/19/include/stdarg.h:
+
+/usr/include/bits/struct_rwlock.h:
+
+/usr/lib/clang/19/include/amxcomplexintrin.h:
+
+/usr/lib/clang/19/include/stddef.h:
+
+/usr/include/bits/stdint-least.h:
+
+/usr/include/stdint.h:
+
+/usr/lib/clang/19/include/avxintrin.h:
+
+/usr/lib/clang/19/include/__wmmintrin_pclmul.h:
+
+/usr/lib/clang/19/include/clwbintrin.h:
+
+/usr/lib/clang/19/include/avx512ifmaintrin.h:
+
+/usr/lib/clang/19/include/vaesintrin.h:
+
+/usr/lib/clang/19/include/adcintrin.h:
+
+/usr/include/sys/select.h:
+
+/usr/lib/clang/19/include/adxintrin.h:
+
+/usr/include/bits/types.h:
+
+/usr/lib/clang/19/include/amxfp16intrin.h:
+
+/usr/lib/clang/19/include/avx2intrin.h:
+
+/usr/lib/clang/19/include/avx512ifmavlintrin.h:
+
+/usr/lib/clang/19/include/rtmintrin.h:
+
+/usr/lib/clang/19/include/avx512bwintrin.h:
+
+/usr/lib/clang/19/include/avx512cdintrin.h:
+
+/home/oleg/projects/HashTable/source/main.cpp:
+
+/usr/lib/clang/19/include/avx512fintrin.h:
+
+/usr/lib/clang/19/include/avx512vbmi2intrin.h:
+
+/usr/lib/clang/19/include/avx512vlfp16intrin.h:
+
+/usr/lib/clang/19/include/avx512vlintrin.h:
+
+/usr/include/bits/types/FILE.h:
+
+/usr/lib/clang/19/include/avx512vlvbmi2intrin.h:
+
+/usr/lib/clang/19/include/avx512vlvnniintrin.h:
+
+/usr/lib/clang/19/include/pmmintrin.h:
+
+/usr/lib/clang/19/include/avx512vlvp2intersectintrin.h:
+
+/usr/lib/clang/19/include/xmmintrin.h:
+
+/usr/include/bits/types/cookie_io_functions_t.h:
+
+/usr/lib/clang/19/include/avx512vpopcntdqintrin.h:
+
+/home/oleg/projects/HashTable/include/hash_table.h:
+
+/usr/include/bits/long-double.h:
+
+/usr/lib/clang/19/include/avx512vp2intersectintrin.h:
+
+/usr/lib/clang/19/include/avxifmaintrin.h:
+
+/usr/lib/clang/19/include/f16cintrin.h:
+
+/usr/lib/clang/19/include/avx512vpopcntdqvlintrin.h:
+
+/usr/lib/clang/19/include/avxvnniint16intrin.h:
+
+/usr/lib64/Scrt1.o:
+
+/usr/lib/clang/19/include/sha512intrin.h:
+
+/usr/lib/clang/19/include/emmintrin.h:
+
+/usr/include/bits/select.h:
+
+/usr/lib/clang/19/include/avxvnniint8intrin.h:
+
+/usr/lib/clang/19/include/bmi2intrin.h:
+
+/usr/lib/clang/19/include/bmiintrin.h:
+
+/usr/lib/clang/19/include/cldemoteintrin.h:

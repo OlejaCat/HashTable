@@ -13,38 +13,41 @@ typedef enum ListOperationError
 
 typedef struct Node
 {
+    // Data needed for list work
+    int next;
+    int prev;
+} Node;
+
+typedef struct NodeData
+{
     // Data for hash table
     const char* key_pointer;
-    size_t length;
-    size_t hash;
-    size_t count;
-
-    // Data needed for list work
-    size_t next;
-    size_t prev;
-} Node;
+    int length;
+    int count;
+} NodeData;
 
 typedef struct List
 {
-    Node*  node_array;
+    Node*     node_array;
+    NodeData* data;
 
-    size_t free_node;
+    int free_node;
     size_t capacity;
     size_t size;
 } List;
 
 
-size_t getNextIndex(List* list, size_t index);
-size_t getPreviousIndex(List* list, size_t index);
+int getNextIndex(List* list, int index);
+int getPreviousIndex(List* list, int index);
 
 ListOperationError listCtor(List* list, size_t capacity);
 ListOperationError listDtor(List* list);
 
-int listInsert(List* list, size_t index);
+int listInsert(List* list, int index);
 int listInsertTail(List* list);
 int listInsertHead(List* list);
 
-ListOperationError listDeleteElement(List* list, size_t index);
+ListOperationError listDeleteElement(List* list, int index);
 ListOperationError listDeleteTail(List* list);
 ListOperationError listDeleteHead(List* list);
 

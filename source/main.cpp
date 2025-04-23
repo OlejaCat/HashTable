@@ -8,11 +8,8 @@ int main()
 {
     char book[256] = {};
 
-    printf("Enter name of file: ");
-    scanf("%s", book);
-
     Text text = {};
-    if (textLoad(&text, book))
+    if (textLoad(&text, "books/bible.txt"))
     {
         fprintf(stderr, "Could not load text\n");
         return 1; 
@@ -27,14 +24,13 @@ int main()
         hashTableSet(hash_table, word_pointer, length);
     }
 
-    // HashTableIterator iterator = hashTableIterator(hash_table);    
-    // while (hashTableNext(&iterator))
-    // {        
+    //HashTableIterator iterator = hashTableIterator(hash_table);    
+    //while (hashTableNext(&iterator))
+    //{        
     //    printf("%.*s %zu\n", (int)iterator.length, iterator.key, iterator.count);
     //}
 
     hashTableDtor(hash_table);
     textDtor(&text);
-
     return 0;
 }

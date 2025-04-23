@@ -1,5 +1,4 @@
 CMakeFiles/hash_table.dir/source/text_processing.cpp.o: \
-  /usr/lib/clang/19/share/asan_ignorelist.txt \
   /home/oleg/projects/HashTable/source/text_processing.cpp \
   /home/oleg/projects/HashTable/include/text_processing.h \
   /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/14.2.1/../../../../include/c++/14.2.1/stdlib.h \
@@ -38,7 +37,8 @@ CMakeFiles/hash_table.dir/source/text_processing.cpp.o: \
   /usr/include/bits/pthreadtypes-arch.h \
   /usr/include/bits/atomic_wide_counter.h \
   /usr/include/bits/struct_mutex.h /usr/include/bits/struct_rwlock.h \
-  /usr/include/alloca.h /usr/include/bits/stdlib-float.h \
+  /usr/include/alloca.h /usr/include/bits/stdlib-bsearch.h \
+  /usr/include/bits/stdlib-float.h \
   /usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/14.2.1/../../../../include/c++/14.2.1/bits/std_abs.h \
   /usr/include/stdio.h /usr/lib/clang/19/include/stdarg.h \
   /usr/lib/clang/19/include/__stdarg___gnuc_va_list.h \
@@ -47,8 +47,9 @@ CMakeFiles/hash_table.dir/source/text_processing.cpp.o: \
   /usr/include/bits/types/__fpos64_t.h /usr/include/bits/types/__FILE.h \
   /usr/include/bits/types/FILE.h /usr/include/bits/types/struct_FILE.h \
   /usr/include/bits/types/cookie_io_functions_t.h \
-  /usr/include/bits/stdio_lim.h /usr/include/ctype.h \
-  /usr/include/string.h /usr/include/strings.h /usr/include/assert.h \
+  /usr/include/bits/stdio_lim.h /usr/include/bits/stdio.h \
+  /usr/include/ctype.h /usr/include/string.h /usr/include/strings.h \
+  /usr/include/assert.h \
   /home/oleg/projects/HashTable/include/hash_table.h \
   /usr/lib/clang/19/include/stdbool.h \
   /home/oleg/projects/HashTable/include/list.h
