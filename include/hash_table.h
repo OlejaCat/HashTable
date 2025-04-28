@@ -41,4 +41,6 @@ typedef struct HashTableIterator
 HashTableIterator hashTableIterator(HashTable* table);
 bool hashTableNext(HashTableIterator* iterator);
 
+size_t hashTableGetLength(HashTable* hash_table);
+
 #endif // HASH_TABLE_H

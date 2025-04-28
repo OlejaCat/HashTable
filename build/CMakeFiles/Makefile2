@@ -63,11 +63,11 @@ CMAKE_BINARY_DIR = /home/oleg/projects/HashTable/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/hash_table.dir/all
+all: CMakeFiles/hash_tester.dir/all
 .PHONY : all
 
 # The main recursive "codegen" target.
-codegen: CMakeFiles/hash_table.dir/codegen
+codegen: CMakeFiles/hash_tester.dir/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
@@ -75,40 +75,40 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/hash_table.dir/clean
+clean: CMakeFiles/hash_tester.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/hash_table.dir
+# Target rules for target CMakeFiles/hash_tester.dir
 
 # All Build rule for target.
-CMakeFiles/hash_table.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/oleg/projects/HashTable/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target hash_table"
-.PHONY : CMakeFiles/hash_table.dir/all
+CMakeFiles/hash_tester.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_tester.dir/build.make CMakeFiles/hash_tester.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_tester.dir/build.make CMakeFiles/hash_tester.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/oleg/projects/HashTable/build/CMakeFiles --progress-num=1,2,3 "Built target hash_tester"
+.PHONY : CMakeFiles/hash_tester.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/hash_table.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/oleg/projects/HashTable/build/CMakeFiles 5
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/hash_table.dir/all
+CMakeFiles/hash_tester.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/oleg/projects/HashTable/build/CMakeFiles 3
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/hash_tester.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/oleg/projects/HashTable/build/CMakeFiles 0
-.PHONY : CMakeFiles/hash_table.dir/rule
+.PHONY : CMakeFiles/hash_tester.dir/rule
 
 # Convenience name for target.
-hash_table: CMakeFiles/hash_table.dir/rule
-.PHONY : hash_table
+hash_tester: CMakeFiles/hash_tester.dir/rule
+.PHONY : hash_tester
 
 # codegen rule for target.
-CMakeFiles/hash_table.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/oleg/projects/HashTable/build/CMakeFiles --progress-num=1,2,3,4,5 "Finished codegen for target hash_table"
-.PHONY : CMakeFiles/hash_table.dir/codegen
+CMakeFiles/hash_tester.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_tester.dir/build.make CMakeFiles/hash_tester.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/oleg/projects/HashTable/build/CMakeFiles --progress-num=1,2,3 "Finished codegen for target hash_tester"
+.PHONY : CMakeFiles/hash_tester.dir/codegen
 
 # clean rule for target.
-CMakeFiles/hash_table.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/clean
-.PHONY : CMakeFiles/hash_table.dir/clean
+CMakeFiles/hash_tester.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_tester.dir/build.make CMakeFiles/hash_tester.dir/clean
+.PHONY : CMakeFiles/hash_tester.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

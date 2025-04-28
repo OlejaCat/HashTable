@@ -76,57 +76,57 @@ CMakeFiles/hash_table.dir/source/main.cpp.o: CMakeFiles/hash_table.dir/flags.mak
 CMakeFiles/hash_table.dir/source/main.cpp.o: /home/oleg/projects/HashTable/source/main.cpp
 CMakeFiles/hash_table.dir/source/main.cpp.o: CMakeFiles/hash_table.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/oleg/projects/HashTable/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/hash_table.dir/source/main.cpp.o"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hash_table.dir/source/main.cpp.o -MF CMakeFiles/hash_table.dir/source/main.cpp.o.d -o CMakeFiles/hash_table.dir/source/main.cpp.o -c /home/oleg/projects/HashTable/source/main.cpp
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hash_table.dir/source/main.cpp.o -MF CMakeFiles/hash_table.dir/source/main.cpp.o.d -o CMakeFiles/hash_table.dir/source/main.cpp.o -c /home/oleg/projects/HashTable/source/main.cpp
 
 CMakeFiles/hash_table.dir/source/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/hash_table.dir/source/main.cpp.i"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/oleg/projects/HashTable/source/main.cpp > CMakeFiles/hash_table.dir/source/main.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/oleg/projects/HashTable/source/main.cpp > CMakeFiles/hash_table.dir/source/main.cpp.i
 
 CMakeFiles/hash_table.dir/source/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/hash_table.dir/source/main.cpp.s"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/oleg/projects/HashTable/source/main.cpp -o CMakeFiles/hash_table.dir/source/main.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/oleg/projects/HashTable/source/main.cpp -o CMakeFiles/hash_table.dir/source/main.cpp.s
 
 CMakeFiles/hash_table.dir/source/text_processing.cpp.o: CMakeFiles/hash_table.dir/flags.make
 CMakeFiles/hash_table.dir/source/text_processing.cpp.o: /home/oleg/projects/HashTable/source/text_processing.cpp
 CMakeFiles/hash_table.dir/source/text_processing.cpp.o: CMakeFiles/hash_table.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/oleg/projects/HashTable/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/hash_table.dir/source/text_processing.cpp.o"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hash_table.dir/source/text_processing.cpp.o -MF CMakeFiles/hash_table.dir/source/text_processing.cpp.o.d -o CMakeFiles/hash_table.dir/source/text_processing.cpp.o -c /home/oleg/projects/HashTable/source/text_processing.cpp
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hash_table.dir/source/text_processing.cpp.o -MF CMakeFiles/hash_table.dir/source/text_processing.cpp.o.d -o CMakeFiles/hash_table.dir/source/text_processing.cpp.o -c /home/oleg/projects/HashTable/source/text_processing.cpp
 
 CMakeFiles/hash_table.dir/source/text_processing.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/hash_table.dir/source/text_processing.cpp.i"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/oleg/projects/HashTable/source/text_processing.cpp > CMakeFiles/hash_table.dir/source/text_processing.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/oleg/projects/HashTable/source/text_processing.cpp > CMakeFiles/hash_table.dir/source/text_processing.cpp.i
 
 CMakeFiles/hash_table.dir/source/text_processing.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/hash_table.dir/source/text_processing.cpp.s"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/oleg/projects/HashTable/source/text_processing.cpp -o CMakeFiles/hash_table.dir/source/text_processing.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/oleg/projects/HashTable/source/text_processing.cpp -o CMakeFiles/hash_table.dir/source/text_processing.cpp.s
 
 CMakeFiles/hash_table.dir/source/list.cpp.o: CMakeFiles/hash_table.dir/flags.make
 CMakeFiles/hash_table.dir/source/list.cpp.o: /home/oleg/projects/HashTable/source/list.cpp
 CMakeFiles/hash_table.dir/source/list.cpp.o: CMakeFiles/hash_table.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/oleg/projects/HashTable/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/hash_table.dir/source/list.cpp.o"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hash_table.dir/source/list.cpp.o -MF CMakeFiles/hash_table.dir/source/list.cpp.o.d -o CMakeFiles/hash_table.dir/source/list.cpp.o -c /home/oleg/projects/HashTable/source/list.cpp
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hash_table.dir/source/list.cpp.o -MF CMakeFiles/hash_table.dir/source/list.cpp.o.d -o CMakeFiles/hash_table.dir/source/list.cpp.o -c /home/oleg/projects/HashTable/source/list.cpp
 
 CMakeFiles/hash_table.dir/source/list.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/hash_table.dir/source/list.cpp.i"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/oleg/projects/HashTable/source/list.cpp > CMakeFiles/hash_table.dir/source/list.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/oleg/projects/HashTable/source/list.cpp > CMakeFiles/hash_table.dir/source/list.cpp.i
 
 CMakeFiles/hash_table.dir/source/list.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/hash_table.dir/source/list.cpp.s"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/oleg/projects/HashTable/source/list.cpp -o CMakeFiles/hash_table.dir/source/list.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/oleg/projects/HashTable/source/list.cpp -o CMakeFiles/hash_table.dir/source/list.cpp.s
 
 CMakeFiles/hash_table.dir/source/hash_table.cpp.o: CMakeFiles/hash_table.dir/flags.make
 CMakeFiles/hash_table.dir/source/hash_table.cpp.o: /home/oleg/projects/HashTable/source/hash_table.cpp
 CMakeFiles/hash_table.dir/source/hash_table.cpp.o: CMakeFiles/hash_table.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/oleg/projects/HashTable/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/hash_table.dir/source/hash_table.cpp.o"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hash_table.dir/source/hash_table.cpp.o -MF CMakeFiles/hash_table.dir/source/hash_table.cpp.o.d -o CMakeFiles/hash_table.dir/source/hash_table.cpp.o -c /home/oleg/projects/HashTable/source/hash_table.cpp
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/hash_table.dir/source/hash_table.cpp.o -MF CMakeFiles/hash_table.dir/source/hash_table.cpp.o.d -o CMakeFiles/hash_table.dir/source/hash_table.cpp.o -c /home/oleg/projects/HashTable/source/hash_table.cpp
 
 CMakeFiles/hash_table.dir/source/hash_table.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/hash_table.dir/source/hash_table.cpp.i"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/oleg/projects/HashTable/source/hash_table.cpp > CMakeFiles/hash_table.dir/source/hash_table.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/oleg/projects/HashTable/source/hash_table.cpp > CMakeFiles/hash_table.dir/source/hash_table.cpp.i
 
 CMakeFiles/hash_table.dir/source/hash_table.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/hash_table.dir/source/hash_table.cpp.s"
-	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/oleg/projects/HashTable/source/hash_table.cpp -o CMakeFiles/hash_table.dir/source/hash_table.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/oleg/projects/HashTable/source/hash_table.cpp -o CMakeFiles/hash_table.dir/source/hash_table.cpp.s
 
 # Object files for target hash_table
 hash_table_OBJECTS = \

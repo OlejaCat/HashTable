@@ -117,113 +117,65 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named hash_table
+# Target rules for targets named hash_tester
 
 # Build rule for target.
-hash_table: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 hash_table
-.PHONY : hash_table
+hash_tester: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 hash_tester
+.PHONY : hash_tester
 
 # fast build rule for target.
-hash_table/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/build
-.PHONY : hash_table/fast
+hash_tester/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_tester.dir/build.make CMakeFiles/hash_tester.dir/build
+.PHONY : hash_tester/fast
 
-source/hash_table.o: source/hash_table.cpp.o
-.PHONY : source/hash_table.o
-
-# target to build an object file
-source/hash_table.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/source/hash_table.cpp.o
-.PHONY : source/hash_table.cpp.o
-
-source/hash_table.i: source/hash_table.cpp.i
-.PHONY : source/hash_table.i
-
-# target to preprocess a source file
-source/hash_table.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/source/hash_table.cpp.i
-.PHONY : source/hash_table.cpp.i
-
-source/hash_table.s: source/hash_table.cpp.s
-.PHONY : source/hash_table.s
-
-# target to generate assembly for a file
-source/hash_table.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/source/hash_table.cpp.s
-.PHONY : source/hash_table.cpp.s
-
-source/list.o: source/list.cpp.o
-.PHONY : source/list.o
+source/hash_tests.o: source/hash_tests.cpp.o
+.PHONY : source/hash_tests.o
 
 # target to build an object file
-source/list.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/source/list.cpp.o
-.PHONY : source/list.cpp.o
+source/hash_tests.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_tester.dir/build.make CMakeFiles/hash_tester.dir/source/hash_tests.cpp.o
+.PHONY : source/hash_tests.cpp.o
 
-source/list.i: source/list.cpp.i
-.PHONY : source/list.i
+source/hash_tests.i: source/hash_tests.cpp.i
+.PHONY : source/hash_tests.i
 
 # target to preprocess a source file
-source/list.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/source/list.cpp.i
-.PHONY : source/list.cpp.i
+source/hash_tests.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_tester.dir/build.make CMakeFiles/hash_tester.dir/source/hash_tests.cpp.i
+.PHONY : source/hash_tests.cpp.i
 
-source/list.s: source/list.cpp.s
-.PHONY : source/list.s
+source/hash_tests.s: source/hash_tests.cpp.s
+.PHONY : source/hash_tests.s
 
 # target to generate assembly for a file
-source/list.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/source/list.cpp.s
-.PHONY : source/list.cpp.s
+source/hash_tests.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_tester.dir/build.make CMakeFiles/hash_tester.dir/source/hash_tests.cpp.s
+.PHONY : source/hash_tests.cpp.s
 
-source/main.o: source/main.cpp.o
-.PHONY : source/main.o
+source/hash_tests_logic.o: source/hash_tests_logic.cpp.o
+.PHONY : source/hash_tests_logic.o
 
 # target to build an object file
-source/main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/source/main.cpp.o
-.PHONY : source/main.cpp.o
+source/hash_tests_logic.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_tester.dir/build.make CMakeFiles/hash_tester.dir/source/hash_tests_logic.cpp.o
+.PHONY : source/hash_tests_logic.cpp.o
 
-source/main.i: source/main.cpp.i
-.PHONY : source/main.i
-
-# target to preprocess a source file
-source/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/source/main.cpp.i
-.PHONY : source/main.cpp.i
-
-source/main.s: source/main.cpp.s
-.PHONY : source/main.s
-
-# target to generate assembly for a file
-source/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/source/main.cpp.s
-.PHONY : source/main.cpp.s
-
-source/text_processing.o: source/text_processing.cpp.o
-.PHONY : source/text_processing.o
-
-# target to build an object file
-source/text_processing.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/source/text_processing.cpp.o
-.PHONY : source/text_processing.cpp.o
-
-source/text_processing.i: source/text_processing.cpp.i
-.PHONY : source/text_processing.i
+source/hash_tests_logic.i: source/hash_tests_logic.cpp.i
+.PHONY : source/hash_tests_logic.i
 
 # target to preprocess a source file
-source/text_processing.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/source/text_processing.cpp.i
-.PHONY : source/text_processing.cpp.i
+source/hash_tests_logic.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_tester.dir/build.make CMakeFiles/hash_tester.dir/source/hash_tests_logic.cpp.i
+.PHONY : source/hash_tests_logic.cpp.i
 
-source/text_processing.s: source/text_processing.cpp.s
-.PHONY : source/text_processing.s
+source/hash_tests_logic.s: source/hash_tests_logic.cpp.s
+.PHONY : source/hash_tests_logic.s
 
 # target to generate assembly for a file
-source/text_processing.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_table.dir/build.make CMakeFiles/hash_table.dir/source/text_processing.cpp.s
-.PHONY : source/text_processing.cpp.s
+source/hash_tests_logic.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/hash_tester.dir/build.make CMakeFiles/hash_tester.dir/source/hash_tests_logic.cpp.s
+.PHONY : source/hash_tests_logic.cpp.s
 
 # Help Target
 help:
@@ -233,19 +185,13 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... hash_table"
-	@echo "... source/hash_table.o"
-	@echo "... source/hash_table.i"
-	@echo "... source/hash_table.s"
-	@echo "... source/list.o"
-	@echo "... source/list.i"
-	@echo "... source/list.s"
-	@echo "... source/main.o"
-	@echo "... source/main.i"
-	@echo "... source/main.s"
-	@echo "... source/text_processing.o"
-	@echo "... source/text_processing.i"
-	@echo "... source/text_processing.s"
+	@echo "... hash_tester"
+	@echo "... source/hash_tests.o"
+	@echo "... source/hash_tests.i"
+	@echo "... source/hash_tests.s"
+	@echo "... source/hash_tests_logic.o"
+	@echo "... source/hash_tests_logic.i"
+	@echo "... source/hash_tests_logic.s"
 .PHONY : help
 
 

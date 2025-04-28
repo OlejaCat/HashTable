@@ -16,6 +16,7 @@ typedef struct Text
 {
     char*  data;
     size_t current_position;
+    size_t word_count;
 } Text;
 
 TextState textLoad(Text* text, const char* filename);

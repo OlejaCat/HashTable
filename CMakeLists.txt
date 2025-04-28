@@ -3,17 +3,28 @@ project(hash_table)
 
 set(CMAKE_CXX_FLAGS "--std=c++20 -Wall -Wextra -pedantic -mavx2 -march=native")
 
-set(CMAKE_CXX_FLAGS_DEBUG " -g ")
+set(CMAKE_CXX_FLAGS_DEBUG "-fsanitize=address -g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -g")
 
-add_executable(${PROJECT_NAME}
-    source/main.cpp
-    source/text_processing.cpp
-    source/list.cpp
-    source/hash_table.cpp
+# add_executable(${PROJECT_NAME}
+#     source/main.cpp
+#     source/text_processing.cpp
+#     source/list.cpp
+#     source/hash_table.cpp
+# )
+# 
+# target_include_directories(${PROJECT_NAME}
+#     PRIVATE
+#         include/
+# )
+
+
+add_executable(hash_tester
+    source/hash_tests.cpp
+    source/hash_tests_logic.cpp
 )
 
-target_include_directories(${PROJECT_NAME}
+target_include_directories(hash_tester
     PRIVATE
         include/
 )

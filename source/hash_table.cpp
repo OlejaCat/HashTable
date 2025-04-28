@@ -3,19 +3,21 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <assert.h>
+#include <immintrin.h>
+#include <x86intrin.h>
 
 #include "list.h"
+#include "hash_function.h"
 
 
 // static ----------------------------------------------------------------------
 
 
-#define INITIAL_CAPACITY 2
-#define LIST_INITIAL_CAPACITY 1000
-#define LOAD_FACTOR 2
-#define SCALE_FACTOR 2
+#define INITIAL_CAPACITY 4096
+#define LIST_INITIAL_CAPACITY 4
 
 
 typedef struct HashTable
@@ -26,8 +28,7 @@ typedef struct HashTable
 } HashTable;
 
 
-static size_t hashFunction(const char* data, size_t length, size_t capacity);
-static HashTableOperationError hashTableResize(HashTable* table);
+static uint32_t hashFunction(const char* str, size_t len);
 
 
 // public ----------------------------------------------------------------------
@@ -100,34 +101,16 @@ const char* hashTableSet(HashTable* table, const char* key, size_t length)
     assert(table != NULL);
     assert(key   != NULL);
 
-    if ((double)table->length / table->capacity > LOAD_FACTOR)
-    {
-        if (hashTableResize(table) != HASH_TABLE_SUCCESS)
-        {
-            fprintf(stderr, "Error while resizing hash table\n");
-            return NULL; 
-        }
-    }
-
-    size_t index = hashFunction(key, length, table->capacity);
+    size_t index = crc_hash(key, length);
     List* list = &table->buckets[index];
     if (list->size != 0)
     {
-        Node* node_array = list->node_array;
-
-        size_t current_index = node_array[0].next;
-        while (current_index != 0)
+        const char* key_pointer = listIncrementValue(list, key, length);
+        if (key_pointer) 
         {
-            NodeData* node_data = &list->data[current_index];
-            Node* node = &node_array[current_index];
-            if (!memcmp(node_data->key_pointer, key, length))
-            {
-                node_data->count++;
-                return node_data->key_pointer;
-            }
-            current_index = node->next;
+            return key_pointer; 
         }
-    }
+    } 
 
     int new_node_index = listInsertTail(list);
     if (new_node_index == 0)
@@ -143,6 +126,7 @@ const char* hashTableSet(HashTable* table, const char* key, size_t length)
     new_node->count       = 1; 
 
     table->length++;
+
     return key;
 }
 
@@ -152,7 +136,7 @@ HashTableOperationError hashTableDelete(HashTable* table, const char* key, size_
     assert(table != NULL);
     assert(key   != NULL);
 
-    size_t index = hashFunction(key, length, table->capacity);
+    size_t index = hashFunction(key, length);
     List* list = &table->buckets[index];
     Node* node_array = list->node_array;
 
@@ -180,7 +164,7 @@ size_t hashTableGet(HashTable* table, const char* key, size_t length)
     assert(table != NULL);
     assert(key   != NULL);
 
-    size_t index = hashFunction(key, length, table->capacity);
+    size_t index = hashFunction(key, length);
     List* list = &table->buckets[index];
     Node* node_array = list->node_array;
 
@@ -249,95 +233,96 @@ bool hashTableNext(HashTableIterator* iterator)
 }
 
 
+size_t hashTableGetLength(HashTable* hash_table)
+{
+    assert(hash_table != NULL);
+
+    return hash_table->length;
+}
+
+
 // static ----------------------------------------------------------------------
 
 
-static HashTableOperationError hashTableResize(HashTable* table)
+static uint32_t hashFunction(const char* str, size_t len) 
 {
-    assert(table != NULL);
+//    const uint32_t FNV_prime = 0x01000193;
+//    const uint32_t FNV_offset_basis = 0x811C9DC5;
+//    uint32_t hash = FNV_offset_basis;
+//
+//    uint32_t chunk;
+//    while (len >= 4) 
+//    {
+//        memcpy(&chunk, str, 4);
+//        hash ^= chunk;
+//        hash *= FNV_prime;
+//        str += 4;
+//        len -= 4;
+//    }
+//
+//    if (len > 0)
+//    {
+//        hash ^= *str++;
+//        hash *= FNV_prime;
+//    }
+//    if (len > 1)
+//    {
+//        hash ^= *str++;
+//        hash *= FNV_prime;
+//    }
+//    if (len > 2)
+//    {
+//        hash ^= *str++;
+//        hash *= FNV_prime;
+//    }
+//
+//    return hash & (INITIAL_CAPACITY - 1);
 
-    size_t old_capacity = table->capacity;
-    table->capacity *= SCALE_FACTOR;
-
-    List* new_buckets = (List*)calloc(table->capacity, sizeof(List));
-    if (!new_buckets)
+    uint32_t crc = 0xFFFFFFFF;
+    for (size_t i = 0; i < len; i++) 
     {
-        return HASH_TABLE_BAD_MEMORY_ALLOCATION; 
+        crc = _mm_crc32_u8(crc, str[i]);
     }
-
-    for (size_t index = 0; index < table->capacity; index++) 
-    {
-        if (listCtor(&new_buckets[index], LIST_INITIAL_CAPACITY) != ListOperationError_SUCCESS)
-        {
-            for (size_t i = 0; i < index; i++)
-            {
-                listDtor(&new_buckets[i]);
-            }
-
-            free(new_buckets);
-            return HASH_TABLE_BAD_MEMORY_ALLOCATION;
-        }
-    }
-    
-    for (size_t index = 0; index < old_capacity; index++)
-    {
-        List* list = &table->buckets[index];
-        Node* node_array = list->node_array;
-
-        size_t current_index = node_array[0].next;
-        while (current_index != 0)
-        {
-            Node* node = &node_array[current_index];
-            NodeData* node_data = &list->data[current_index];
-
-            size_t new_index = hashFunction(node_data->key_pointer, node_data->length, table->capacity);
-            List* new_list = &new_buckets[new_index];
-            
-            int list_index = listInsertTail(new_list);
-            if (list_index == 0)
-            {
-                fprintf(stderr, "Erro accured in resizing hash table");
-
-                for (size_t i = 0; i < index; i++) 
-                {
-                    listDtor(&new_buckets[i]);
-                }
-
-                free(new_buckets);
-                return HASH_TABLE_BAD_MEMORY_ALLOCATION;
-            }
-
-            NodeData* new_node_data = &new_list->data[list_index];
-
-            new_node_data->key_pointer = node_data->key_pointer;
-            new_node_data->length      = node_data->length;
-            new_node_data->count       = node_data->count;
-
-            current_index = node->next;
-        }
-    }
-
-    for (size_t index = 0; index < old_capacity; index++)
-    {
-        listDtor(&table->buckets[index]);
-    }
-
-    free(table->buckets);
-    table->buckets = new_buckets;
-    
-    return HASH_TABLE_SUCCESS;
+    return (~crc) & (INITIAL_CAPACITY - 1);
 }
-
-
-static size_t hashFunction(const char* data, size_t length, size_t capacity)
-{
-    assert(data != NULL);
-
-    unsigned long hash = 5381;
-    for (size_t i = 0; i < length; i++)
-    {
-        hash = ((hash << 5) + hash) + (unsigned char)data[i];
-    }
-
-    return (size_t)hash % capacity;
-}
+//static uint32_t hashFunction(const char* str, size_t len)
+//{
+//    // crc32 hash function 
+//    const char* i = NULL;
+//    int j;
+//    uint32_t byte = 0, crc = 0, mask = 0;
+//    // very risk to make this variable static but i want to try
+//    static uint32_t crc32_table[256] = {0};
+//
+//    if (crc32_table[1] == 0) 
+//    {
+//        for (byte = 0; byte <= 255; byte++) 
+//        {
+//            crc = byte;
+//            for (j = 7; j >= 0; j--) 
+//            {   
+//                mask = -(crc & 1);
+//                crc = (crc >> 1) ^ (0xEDB88320 & mask);
+//            }
+//            crc32_table[byte] = crc;
+//        }
+//    }
+//
+//    i = str;
+//    const char* end = str + len;
+//    crc = 0xFFFFFFFF;
+//
+//    for (; i < end - 3; i+=4)
+//    {
+//        crc = _mm_crc32_u32(crc, *(const uint32_t*)(i));
+//    }
+//
+//    switch (end - i) {
+//        case 3: crc = _mm_crc32_u8(crc, *i++);
+//        case 2: crc = _mm_crc32_u8(crc, *i++);
+//        case 1: crc = _mm_crc32_u8(crc, *i++);
+//        default: break;
+//    }
+//    
+//    return ~crc & (INITIAL_CAPACITY - 1);
+//}

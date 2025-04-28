@@ -61,6 +61,8 @@ TextState textLoad(Text* text, const char* filename)
         return TextState_FILE_READING_ERROR;
     }
 
+    text->word_count = 0;
+
     fclose(text_file);
 
     return TextState_OK;
@@ -123,35 +125,43 @@ int textPutNextWordToBuffer(Text* text, char* buffer, size_t buffer_size)
 }
 
 
-int textNextWordPointer(Text* text, char** pointer)
+int textNextWordPointer(Text* text, char** pointer) 
 {
-    assert(text != NULL);
+    assert(text    != NULL);
+    assert(pointer != NULL);
 
     char* current_text = text->data + text->current_position;
-    while (isspace((unsigned char)*current_text))
+
+    while (isspace((unsigned char)*current_text)) 
     {
         current_text++;
     }
 
-    if (*current_text == '\0')
+    if (*current_text == '\0') 
     {
-        return 0; 
+        text->current_position = current_text - text->data;
+        return 0;
+    }
+
+    while (*current_text != '\0' && !isalpha((unsigned char)*current_text)) 
+    {
+        current_text++;
     }
 
     *pointer = current_text;
-    size_t i = 0;
-    while (*current_text != '\0'
-        && !isspace((unsigned char)*current_text))
+    size_t length = 0;
+
+    while (isalpha((unsigned char)*current_text) && *current_text != '\0') 
     {
         current_text++;
-        i++;
+        length++;
     }
 
     text->current_position = current_text - text->data;
+    text->word_count++;
 
-    return i;
+    return length;
 }
-
 
 
 TextState textMoveToBegin(Text* text)

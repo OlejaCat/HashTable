@@ -1,17 +1,22 @@
 #include "list.h"
 
 #include <string.h>
+#include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <immintrin.h>
 #include <assert.h>
+
+#include "my_memcmp.h"
 
 
 // static --------------------------------------------------------------------------------------------------------------
 
 
 #define SCALE_FACTOR 2
+#define MIN(a,b) (((a)<(b))?(a):(b))
 
 static ListOperationError listResize(List* list);
 
@@ -28,14 +33,14 @@ ListOperationError listCtor(List* list, size_t capacity)
 
     list->capacity = capacity;
 
-    list->node_array = (Node*)aligned_alloc(32, (capacity + 1) * sizeof(Node));
+    list->node_array = (Node*)aligned_alloc(32, capacity * sizeof(Node));
     if (list->node_array == NULL)
     {
         fprintf(stderr, "Error allocating node array for list\n");
         return ListOperationError_ERROR;
     }
 
-    list->data = (NodeData*)calloc(capacity + 1, sizeof(NodeData));
+    list->data = (NodeData*)calloc(capacity, sizeof(NodeData));
     if (list->data == NULL)
     {
         fprintf(stderr, "Error while allocating data for nodes\n");
@@ -55,6 +60,12 @@ ListOperationError listCtor(List* list, size_t capacity)
 
 
         _mm256_storeu_si256((__m256i*)(list->node_array + index), next);
+    }
+
+    for (; index < capacity; index++)
+    {
+        list->node_array[index].next = index + 1;
+        list->node_array[index].prev = 0;
     }
 
     list->free_node = 1;
@@ -109,7 +120,8 @@ int listInsert(List* list, int index)
         return 0;
     }
 
-    if (list->free_node >= (int)list->capacity)
+    size_t real_index = list->free_node;
+    if (real_index >= list->capacity)
     {
         if (listResize(list) != ListOperationError_SUCCESS)
         {
@@ -118,7 +130,6 @@ int listInsert(List* list, int index)
         }
     }
 
-    int real_index = list->free_node;
 
     assert(real_index <= (int)list->capacity);
     list->free_node = list->node_array[real_index].next;
@@ -200,6 +211,149 @@ ListOperationError listDeleteTail(List* list)
 }
 
 
+// -------------------------------  CONTAINS OPERATIONS  -------------------------------
+
+
+const char* listIncrementValue(List* list, const char* key, size_t length)
+{
+    assert(list != NULL);
+    assert(key  != NULL);
+
+    Node* node_array = list->node_array;
+
+    //size_t current_index = node_array[0].next;
+    for (size_t i = 1; i <= list->size; i++) 
+    {
+        NodeData* node_data = &list->data[i];
+        Node* node = &node_array[i];
+        if (node_data->length == length) 
+        {
+            int result;
+            const char* key1 = node_data->key_pointer;
+            const char* key2 = key;
+            size_t len = length;
+
+            __asm__ __volatile__ (
+                "1:                      \n"
+                "   cmp $4, %[len]       \n"          
+                "   jb  2f               \n"                   
+                "   movd (%[key1]), %%xmm0\n"
+                "   movd (%[key2]), %%xmm1\n"
+                "   pcmpeqb %%xmm1, %%xmm0\n"
+                "   pmovmskb %%xmm0, %%eax\n"
+                "   and $0x0F, %%eax   \n"
+                "   cmp $0x0F, %%eax   \n"
+                "   jne 4f               \n"                  
+                "   add $4, %[key1]      \n"         
+                "   add $4, %[key2]      \n"
+                "   sub $4, %[len]       \n"
+                "   jmp 1b               \n"                 
+
+                "2:                      \n"
+                "   test %[len], %[len]  \n"     
+                "   jz  3f               \n"                   
+                "   mov (%[key1]), %%cl  \n"     
+                "   cmp (%[key2]), %%cl  \n"     
+                "   jne 4f               \n"                  
+                "   inc %[key1]          \n"             
+                "   inc %[key2]          \n"
+                "   dec %[len]           \n"
+                "   jnz 2b               \n"                  
+
+                "3:                      \n"
+                "   mov $1, %%eax        \n"           
+                "   jmp 5f               \n"
+                "4:                      \n"
+                "   pxor %%xmm0, %%xmm0  \n"
+                "   pxor %%xmm1, %%xmm1  \n"
+                "   xor %%eax, %%eax     \n"        
+                "5:                      \n"
+                : "=a" (result),              
+                  [key1] "+r" (key1),     
+                  [key2] "+r" (key2),
+                  [len]  "+r" (len)
+                :                            
+                : "rcx", "xmm0", "xmm1", "memory", "cc"      
+            );
+
+            if (result) {
+                node_data->count++;
+                return node_data->key_pointer;
+            }
+        }
+    }
+
+    //while (current_index != 0)
+    //{
+    //    NodeData* node_data = &list->data[current_index];
+    //    Node* node = &node_array[current_index];
+        //if (!memcmp(node_data->key_pointer, key, length))
+        //{
+        //    node_data->count++;
+        //    return node_data->key_pointer;
+        //}
+        //if (node_data->length == length 
+        // && myMemcmp(node_data->key_pointer, key, length))
+        //{
+        //    node_data->count++;
+        //    return node_data->key_pointer;
+        //}
+        //if (node_data->length == length) 
+        //{
+        //    int result;
+        //    const char* key1 = node_data->key_pointer;
+        //    const char* key2 = key;
+        //    size_t len = length;
+
+        //    __asm__ __volatile__ (
+        //        "1:                      \n"
+        //        "   cmp $4, %[len]       \n"          
+        //        "   jb  2f               \n"                   
+        //        "   mov (%[key1]), %%ecx \n"    
+        //        "   cmp (%[key2]), %%ecx \n"    
+        //        "   jne 4f               \n"                  
+        //        "   add $4, %[key1]      \n"         
+        //        "   add $4, %[key2]      \n"
+        //        "   sub $4, %[len]       \n"
+        //        "   jmp 1b               \n"                 
+
+        //        "2:                      \n"
+        //        "   test %[len], %[len]  \n"     
+        //        "   jz 3f                \n"                   
+        //        "   mov (%[key1]), %%cl  \n"     
+        //        "   cmp (%[key2]), %%cl  \n"     
+        //        "   jne 4f               \n"                  
+        //        "   inc %[key1]          \n"             
+        //        "   inc %[key2]          \n"
+        //        "   dec %[len]           \n"
+        //        "   jnz 2b               \n"                  
+
+        //        "3:                      \n"
+        //        "   mov $1, %%eax        \n"           
+        //        "   jmp 5f               \n"
+        //        "4:                      \n"
+        //        "   xor %%eax, %%eax     \n"        
+        //        "5:                      \n"
+        //        : "=a" (result),              
+        //          [key1] "+r" (key1),     
+        //          [key2] "+r" (key2),
+        //          [len]  "+r" (len)
+        //        :                            
+        //        : "ecx", "memory", "cc"      
+        //    );
+
+        //    if (result) {
+        //        node_data->count++;
+        //        return node_data->key_pointer;
+        //    }
+        //}
+        //current_index = node->next;
+    //}
+
+    return NULL;
+}
+
+
 // static --------------------------------------------------------------------------------------------------------------
 
 
@@ -207,17 +361,26 @@ static ListOperationError listResize(List* list)
 {
     assert(list != NULL);
 
-    list->capacity *= SCALE_FACTOR;
+    size_t old_capacity = list->capacity;
+    list->capacity = old_capacity * SCALE_FACTOR;
 
-    Node* new_array = (Node*)realloc(list->node_array, (list->capacity + 1) * sizeof(Node));
-    if (!list->node_array)
+    Node* new_array = (Node*)realloc(list->node_array, list->capacity * sizeof(Node));
+    if (!new_array)
     {
         fprintf(stderr, "Error while reallocating memory list\n");
         return ListOperationError_ERROR;
     }
     list->node_array = new_array;
+    
+    NodeData* new_array_data = (NodeData*)realloc(list->data, list->capacity * sizeof(NodeData));
+    if (!new_array_data)
+    {
+        fprintf(stderr, "Error reallocating memory for data in chain\n");
+        return ListOperationError_ERROR;
+    }
+    list->data = new_array_data;
 
-    for (size_t i = list->free_node; i <= list->capacity; i++) {
+    for (size_t i = list->free_node; i < list->capacity; i++) {
         list->node_array[i].next = i + 1;
         list->node_array[i].prev = 0;
     }
