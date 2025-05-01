@@ -103,14 +103,12 @@ const char* hashTableSet(HashTable* table, const char* key, size_t length)
 
     size_t index = crc_hash(key, length);
     List* list = &table->buckets[index];
-    if (list->size != 0)
+
+    const char* key_pointer = listIncrementValue(list, key, length);
+    if (key_pointer) 
     {
-        const char* key_pointer = listIncrementValue(list, key, length);
-        if (key_pointer) 
-        {
             return key_pointer; 
-        }
-    } 
+    }
 
     int new_node_index = listInsertTail(list);
     if (new_node_index == 0)
@@ -124,6 +122,7 @@ const char* hashTableSet(HashTable* table, const char* key, size_t length)
     new_node->key_pointer = key;
     new_node->length      = length;
     new_node->count       = 1; 
+    //list->lengths[new_node_index] = length;
 
     table->length++;
 

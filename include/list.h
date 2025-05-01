@@ -30,7 +30,8 @@ typedef struct List
 {
     Node*     node_array;
     NodeData* data;
-
+    //int*      lengths; 
+    
     int free_node;
     size_t capacity;
     size_t size;

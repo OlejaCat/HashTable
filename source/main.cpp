@@ -8,7 +8,7 @@
 int main()
 {
     Text text = {};
-    if (textLoad(&text, "big_file.txt"))
+    if (textLoad(&text, "big_file_copy.txt"))
     {
         fprintf(stderr, "Could not load text\n");
         return 1; 
