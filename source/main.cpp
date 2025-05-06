@@ -5,10 +5,15 @@
 #include "my_memcmp.h"
 
 
+const size_t NUMBER_OF_SEARCHES = 1e7;
+
+
 int main()
 {
+    srand(42);
+
     Text text = {};
-    if (textLoad(&text, "big_file_copy.txt"))
+    if (textLoad(&text, "big_file.txt"))
     {
         fprintf(stderr, "Could not load text\n");
         return 1; 
@@ -28,13 +33,16 @@ int main()
         hashTableSet(hash_table, word_pointer, length);
     }
 
-//    HashTableIterator iterator = hashTableIterator(hash_table);    
-//    while (hashTableNext(&iterator))
-//    {        
-//        printf("%.*s %zu\n", (int)iterator.length, iterator.key, iterator.count);
-//    }
-
     printf("Words: %zu. Unigue words: %zu\nMax word len: %d\n", text.word_count, hashTableGetLength(hash_table), max_length);
+
+    size_t rand_sum = 0;
+    for (size_t i = 0; i < NUMBER_OF_SEARCHES; i++)
+    {
+        int length = textGetRandomWord(&text, &word_pointer);
+        rand_sum += hashTableGet(hash_table, word_pointer, length);
+    }
+
+    printf("Random quantity of words: %zu\n", rand_sum);
 
     hashTableDtor(hash_table);
     textDtor(&text);

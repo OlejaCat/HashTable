@@ -16,7 +16,7 @@
 // static ----------------------------------------------------------------------
 
 
-#define INITIAL_CAPACITY 4096
+#define INITIAL_CAPACITY 2048
 #define LIST_INITIAL_CAPACITY 4
 
 
@@ -28,7 +28,7 @@ typedef struct HashTable
 } HashTable;
 
 
-static uint32_t hashFunction(const char* str, size_t len);
+static uint32_t hashFunction(const char* str, size_t len, size_t size);
 
 
 // public ----------------------------------------------------------------------
@@ -101,7 +101,7 @@ const char* hashTableSet(HashTable* table, const char* key, size_t length)
     assert(table != NULL);
     assert(key   != NULL);
 
-    size_t index = crc_hash(key, length);
+    size_t index = hashFunction(key, length, table->capacity);
     List* list = &table->buckets[index];
 
     const char* key_pointer = listIncrementValue(list, key, length);
@@ -122,7 +122,6 @@ const char* hashTableSet(HashTable* table, const char* key, size_t length)
     new_node->key_pointer = key;
     new_node->length      = length;
     new_node->count       = 1; 
-    //list->lengths[new_node_index] = length;
 
     table->length++;
 
@@ -135,7 +134,7 @@ HashTableOperationError hashTableDelete(HashTable* table, const char* key, size_
     assert(table != NULL);
     assert(key   != NULL);
 
-    size_t index = hashFunction(key, length);
+    size_t index = hashFunction(key, length, table->capacity);
     List* list = &table->buckets[index];
     Node* node_array = list->node_array;
 
@@ -163,23 +162,11 @@ size_t hashTableGet(HashTable* table, const char* key, size_t length)
     assert(table != NULL);
     assert(key   != NULL);
 
-    size_t index = hashFunction(key, length);
+
+    size_t index = hashFunction(key, length, table->capacity);
     List* list = &table->buckets[index];
-    Node* node_array = list->node_array;
 
-    size_t current_index = node_array[0].next;
-    while (current_index != 0)
-    {
-        Node* node = &node_array[current_index];
-        NodeData* node_data = &list->data[current_index];
-        if (!memcmp(node_data->key_pointer, key, length))
-        {
-            return node_data->count;
-        }
-        current_index = node->next;
-    }
-
-    return 0;
+    return listGetValue(list, key, length);
 }
 
 
@@ -243,85 +230,14 @@ size_t hashTableGetLength(HashTable* hash_table)
 // static ----------------------------------------------------------------------
 
 
-static uint32_t hashFunction(const char* str, size_t len) 
+static uint32_t hashFunction(const char* str, size_t len, size_t size)
 {
-//    const uint32_t FNV_prime = 0x01000193;
-//    const uint32_t FNV_offset_basis = 0x811C9DC5;
-//    uint32_t hash = FNV_offset_basis;
-//
-//    uint32_t chunk;
-//    while (len >= 4) 
-//    {
-//        memcpy(&chunk, str, 4);
-//        hash ^= chunk;
-//        hash *= FNV_prime;
-//        str += 4;
-//        len -= 4;
-//    }
-//
-//    if (len > 0)
-//    {
-//        hash ^= *str++;
-//        hash *= FNV_prime;
-//    }
-//    if (len > 1)
-//    {
-//        hash ^= *str++;
-//        hash *= FNV_prime;
-//    }
-//    if (len > 2)
-//    {
-//        hash ^= *str++;
-//        hash *= FNV_prime;
-//    }
-//
-//    return hash & (INITIAL_CAPACITY - 1);
+    assert(str != NULL);
 
     uint32_t crc = 0xFFFFFFFF;
     for (size_t i = 0; i < len; i++) 
     {
         crc = _mm_crc32_u8(crc, str[i]);
     }
-    return (~crc) & (INITIAL_CAPACITY - 1);
+    return (~crc) & (size - 1);
 }
-//static uint32_t hashFunction(const char* str, size_t len)
-//{
-//    // crc32 hash function 
-//    const char* i = NULL;
-//    int j;
-//    uint32_t byte = 0, crc = 0, mask = 0;
-//    // very risk to make this variable static but i want to try
-//    static uint32_t crc32_table[256] = {0};
-//
-//    if (crc32_table[1] == 0) 
-//    {
-//        for (byte = 0; byte <= 255; byte++) 
-//        {
-//            crc = byte;
-//            for (j = 7; j >= 0; j--) 
-//            {   
-//                mask = -(crc & 1);
-//                crc = (crc >> 1) ^ (0xEDB88320 & mask);
-//            }
-//            crc32_table[byte] = crc;
-//        }
-//    }
-//
-//    i = str;
-//    const char* end = str + len;
-//    crc = 0xFFFFFFFF;
-//
-//    for (; i < end - 3; i+=4)
-//    {
-//        crc = _mm_crc32_u32(crc, *(const uint32_t*)(i));
-//    }
-//
-//    switch (end - i) {
-//        case 3: crc = _mm_crc32_u8(crc, *i++);
-//        case 2: crc = _mm_crc32_u8(crc, *i++);
-//        case 1: crc = _mm_crc32_u8(crc, *i++);
-//        default: break;
-//    }
-//    
-//    return ~crc & (INITIAL_CAPACITY - 1);
-//}

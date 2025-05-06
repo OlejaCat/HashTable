@@ -32,7 +32,7 @@ typedef struct HashTableIterator
     size_t      length;
     size_t      count;
 
-    // this fields be addressed directly
+    // this fields shouldn`t be addressed directly
     HashTable* _table;
     size_t     _bucket_index;
     size_t     _node_index;

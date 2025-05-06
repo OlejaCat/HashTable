@@ -7,6 +7,7 @@
 #include <time.h>
 
 #include "hash_string.h"
+#include "text_processing.h"
 
 
 // static ----------------------------------------------------------------------
@@ -14,11 +15,11 @@
 
 #define SRAND_SEED 42
 #define MAX_LEN 20
-#define MIN_LEN 5
-#define NUMBER_OF_TESTS 1000000
-#define DEFAULT_BUCKET_SIZE 4096
+#define NUMBER_OF_TESTS 20000
+#define DEFAULT_BUCKET_SIZE 2048
 
-static int generateStringTest(FILE* file);
+static int generateStringTest(const char* input_file, 
+                              FILE*       output_file);
 
 static int testStringHash(hashStringFunction hash_func, 
                           size_t             bucket_size,
@@ -52,7 +53,8 @@ int generateTests()
         return 1;
     }
 
-    if (generateStringTest(test_file)) 
+    if (generateStringTest("big_file.txt",
+                           test_file)) 
     {
         fclose(test_file);
         return 1;
@@ -70,8 +72,8 @@ int testAllStringHashes(size_t bucket_size)
     testStringHash(hash_string_polynomial, bucket_size, "String polynomial",      "results/hash_string_polynomial.txt");
     testStringHash(hash_string_crc32,      bucket_size, "String crc32",           "results/hash_string_crc32.txt");
     testStringHash(hash_string_fnv_1a,     bucket_size, "String FNV-1a",          "results/hash_string_fnv-1a.txt");
-    testStringHash(hash_string_djb2,       bucket_size, "Djb2 functions",         "results/hash_string_djb2.txt");
-    testStringHash(hash_string_sdbm,       bucket_size, "Sdbm functions",         "results/hash_string_sdbm.txt");
+    testStringHash(hash_string_djb2,       bucket_size, "String DJB2",            "results/hash_string_djb2.txt");
+    testStringHash(hash_string_sdbm,       bucket_size, "String SDBM",            "results/hash_string_sdbm.txt");
 
     return 0;
 }
@@ -105,7 +107,7 @@ static int testStringHash(hashStringFunction hash_func,
         return 1;
     }
 
-    const long long start_time = getNanoTime();
+    long long result_time = 0;
     char buffer[MAX_LEN + 1];
     int items_read = -1;
     
@@ -117,27 +119,24 @@ static int testStringHash(hashStringFunction hash_func,
             buffer[--len] = '\0';
         }
 
-        if (len < MIN_LEN || len > MAX_LEN)
+        if (len > MAX_LEN)
         {
             continue;
         }
 
+        const long long start_time = getNanoTime();
         size_t hash = hash_func(buffer, len, bucket_size);
+        const long long end_time = getNanoTime();
+
+        result_time += end_time - start_time;
         buckets[hash]++;
         items_read++;
     }
 
-    const long long end_time = getNanoTime();
     fclose(file);
 
-    if (items_read != NUMBER_OF_TESTS)
-    {
-        fprintf(stderr, "Read %d items instead of %d\n", items_read, NUMBER_OF_TESTS);
-    }
-
-
     HashTestResult result = {};
-    result.time_ns = end_time - start_time;
+    result.time_ns = result_time;
     result.variance = calculateVariance(buckets, bucket_size, items_read);
     result.bucket_size = bucket_size;
     result.buckets = buckets;
@@ -149,26 +148,24 @@ static int testStringHash(hashStringFunction hash_func,
 }
 
 
-static int generateStringTest(FILE* file)
+static int generateStringTest(const char* input_file, 
+                              FILE*       output_file)
 {
-    assert(file != NULL);
+    assert(input_file  != NULL);
+    assert(output_file != NULL);
 
-    fprintf(file, "%d\n", NUMBER_OF_TESTS);
-    char buffer[21] = {};
-    for (int i = 0; i < NUMBER_OF_TESTS; i++)
+    Text text = {};
+    if (textLoad(&text, input_file))
     {
-        int length = MIN_LEN + rand() % (MAX_LEN - MIN_LEN + 1);
-        for (int j = 0; j < length; j++)
-        {
-            buffer[j] = 'a' + rand() % 26;
-        }
-        buffer[length] = '\0';
+        fprintf(stderr, "Could not load text\n");
+        return 1; 
+    }
 
-        if (fprintf(file, "%s\n", buffer) < 0)
-        {
-            fprintf(stderr, "Error writing string test\n");
-            return 1;
-        }
+    char* word_pointer = NULL;
+    for (size_t i = 0; i < NUMBER_OF_TESTS; i++)
+    {
+        int length = textGetRandomWord(&text, &word_pointer);
+        fprintf(output_file, "%.*s\n", length, word_pointer);
     }
 
     return 0;

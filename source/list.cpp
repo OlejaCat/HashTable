@@ -16,10 +16,8 @@
 
 
 #define SCALE_FACTOR 2
-#define MIN(a,b) (((a)<(b))?(a):(b))
 
 static ListOperationError listResize(List* list);
-static bool compareKeys(const char* key1, const char* key2, int length);
 
 
 // public --------------------------------------------------------------------------------------------------------------
@@ -51,9 +49,9 @@ ListOperationError listCtor(List* list, size_t capacity)
     list->node_array[0].next = 0;
     list->node_array[0].prev = 0;
 
-    int index = 1;
+    size_t index = 1;
     int simd_size = 4;
-    for (; index  < (int)(capacity - simd_size + 1); index += simd_size)
+    for (; index  < capacity - simd_size + 1; index += simd_size)
     {
         __m256i next = _mm256_setr_epi32(
             index + 1, 0, index + 2, 0, index + 3, 0, index + 4, 0
@@ -131,11 +129,8 @@ int listInsert(List* list, int index)
         }
     }
 
-
-    assert(real_index <= (int)list->capacity);
     list->free_node = list->node_array[real_index].next;
 
-    assert(list->node_array[real_index].next <= (int)list->capacity);
     list->node_array[real_index].next = list->node_array[index].next;
     list->node_array[real_index].prev = index;
 
@@ -215,132 +210,17 @@ ListOperationError listDeleteTail(List* list)
 // -------------------------------  CONTAINS OPERATIONS  -------------------------------
 
 
-//const char* listIncrementValue(List* list, const char* key, size_t length)
-//{
-//    assert(list != NULL);
-//    assert(key  != NULL);
-//
-//    const int simd_size = 4;
-//    size_t i = 1;
-//
-//    __m128i target_length = _mm_set1_epi32(length);
-//    for (; i + simd_size + 1 <= list->size; i+=simd_size)
-//    {
-//        __m128i current = _mm_loadu_si128((__m128i*)(list->lengths + i));
-//
-//        __m128i cmp_result = _mm_cmpeq_epi32(current, target_length);
-//        int mask = _mm_movemask_ps(_mm_castsi128_ps(cmp_result));
-//        if (mask == 0)
-//        {
-//            continue; 
-//        }
-//
-//        for (int j = 0; j < simd_size; j++)
-//        {
-//            if (!mask & (1 << j)) 
-//            {
-//                continue; 
-//            }
-//
-//            NodeData* node_data = &list->data[i + j];
-//            const char* key1 = node_data->key_pointer;
-//            const char* key2 = key;
-//
-//            if (compareKeys(key1, key2, length))
-//            {
-//                node_data->count++;
-//                return node_data->key_pointer;
-//            }
-//        }
-//    }
-//
-//    for (; i <= list->size; i++)
-//    {
-//        NodeData* node_data = &list->data[i];
-//        if (list->lengths[i] == length) 
-//        {
-//            //int result = 0;
-//            const char* key1 = node_data->key_pointer;
-//            const char* key2 = key;
-//
-//            if (compareKeys(key1, key2, length))
-//            {
-//                node_data->count++;
-//                return node_data->key_pointer;
-//            }
-//        }
-//    }
-//
-//    return NULL;
-//}
-
 const char* listIncrementValue(List* list, const char* key, size_t length)
 {
     assert(list != NULL);
     assert(key  != NULL);
 
-    //Node* node_array = list->node_array;
-
-    //size_t current_index = node_array[0].next;
     for (size_t i = 1; i <= list->size; i++) 
     {
         NodeData* node_data = &list->data[i];
-        //Node* node = &node_array[i];
-        if (node_data->length == length) 
+        if (node_data->length == (int)length) 
         {
-            //int result = 0;
-            const char* key1 = node_data->key_pointer;
-            const char* key2 = key;
-            size_t len = length;
-
-
-
-    //        __asm__ __volatile__ (
-    //                "1:                      \n"
-    //                "   cmp %[len], 4        \n"
-    //                "   jb 2                 \n"
-
-    //                "   movd xmm0, [%[key1]] \n"
-    //                "   movd xmm1, [%[key2]] \n"
-    //                "   pcmpeqb xmm0, xmm1   \n"
-    //                "   pmovmskb eax, xmm0   \n"
-    //                "   and eax, 0x0F        \n"
-    //                "   cmp eax, 0x0F        \n"
-    //                "   jne 4                \n"
-
-    //                "   add %[key1], 4       \n"
-    //                "   add %[key2], 4       \n"
-    //                "   sub %[len], 4        \n"
-    //                "   jmp 1                \n"
-
-    //                "2:                      \n"
-    //                "   test %[len], %[len]  \n"
-    //                "   jz 3                 \n"
-    //                "   mov cl, [%[key1]]    \n"
-    //                "   cmp cl, [%[key2]]    \n"
-    //                "   jne 4                \n"
-    //                "   inc %[key1]          \n"
-    //                "   inc %[key2]          \n"
-    //                "   dec %[len]           \n"
-    //                "   jnz 2                \n"
-
-    //                "3:                      \n"
-    //                "   mov eax, 1           \n"
-    //                "   jmp 5                \n"
-
-    //                "4:                      \n"
-    //                "   xor eax, eax         \n"
-    //                "5:                      \n"
-
-    //                : "=a" (result),
-    //            [key1] "+r" (key1),
-    //            [key2] "+r" (key2),
-    //            [len] "+r" (len)
-    //                :
-    //                    : "rcx", "xmm0", "xmm1", "memory", "cc"
-    //        );
-
-            if (compareKeys(key1, key2, len)) 
+            if (!memcmp(key, node_data->key_pointer, length)) 
             {
                 node_data->count++;
                 return node_data->key_pointer;
@@ -348,107 +228,53 @@ const char* listIncrementValue(List* list, const char* key, size_t length)
         }
     }
 
-    //while (current_index != 0)
-    //{
-    //    NodeData* node_data = &list->data[current_index];
-    //    Node* node = &node_array[current_index];
-        //if (!memcmp(node_data->key_pointer, key, length))
-        //{
-        //    node_data->count++;
-        //    return node_data->key_pointer;
-        //}
-        //if (node_data->length == length 
-        // && myMemcmp(node_data->key_pointer, key, length))
-        //{
-        //    node_data->count++;
-        //    return node_data->key_pointer;
-        //}
-        //if (node_data->length == length) 
-        //{
-        //    int result;
-        //    const char* key1 = node_data->key_pointer;
-        //    const char* key2 = key;
-        //    size_t len = length;
-
-        //    __asm__ __volatile__ (
-        //        "1:                      \n"
-        //        "   cmp $4, %[len]       \n"          
-        //        "   jb  2f               \n"                   
-        //        "   mov (%[key1]), %%ecx \n"    
-        //        "   cmp (%[key2]), %%ecx \n"    
-        //        "   jne 4f               \n"                  
-        //        "   add $4, %[key1]      \n"         
-        //        "   add $4, %[key2]      \n"
-        //        "   sub $4, %[len]       \n"
-        //        "   jmp 1b               \n"                 
-
-        //        "2:                      \n"
-        //        "   test %[len], %[len]  \n"     
-        //        "   jz 3f                \n"                   
-        //        "   mov (%[key1]), %%cl  \n"     
-        //        "   cmp (%[key2]), %%cl  \n"     
-        //        "   jne 4f               \n"                  
-        //        "   inc %[key1]          \n"             
-        //        "   inc %[key2]          \n"
-        //        "   dec %[len]           \n"
-        //        "   jnz 2b               \n"                  
-
-        //        "3:                      \n"
-        //        "   mov $1, %%eax        \n"           
-        //        "   jmp 5f               \n"
-        //        "4:                      \n"
-        //        "   xor %%eax, %%eax     \n"        
-        //        "5:                      \n"
-        //        : "=a" (result),              
-        //          [key1] "+r" (key1),     
-        //          [key2] "+r" (key2),
-        //          [len]  "+r" (len)
-        //        :                            
-        //        : "ecx", "memory", "cc"      
-        //    );
-
-        //    if (result) {
-        //        node_data->count++;
-        //        return node_data->key_pointer;
-        //    }
-        //}
-        //current_index = node->next;
-    //}
-
     return NULL;
 }
 
 
-// static --------------------------------------------------------------------------------------------------------------
-
-
-static bool compareKeys(const char* key1, const char* key2, int length)
+size_t listGetValue(List* list, const char* key, size_t length)
 {
-    assert(key1 != NULL);
-    assert(key2 != NULL);
+    assert(list != NULL);
+    assert(key  != NULL);
 
-    int i = 0;
-    for (; i + 4 <= length; i+=4)
+    size_t size = list->size;
+    NodeData* node_data_array = list->data;
+
+    for (size_t i = 1; i <= size; i++) 
     {
-        __m128i a = _mm_loadu_si32(key1 + i);
-        __m128i b = _mm_loadu_si32(key2 + i);
-        __m128i cmp_result = _mm_cmpeq_epi8(a, b);
-        if ((_mm_movemask_epi8(cmp_result) & 0xF) != 0xF)
+        NodeData* node_data = node_data_array + i;
+        if (node_data->length != (int)length)
         {
-            return false; 
+            continue; 
+        }
+
+        uint32_t bitmask = 0;
+        uint32_t mask    = 0;
+
+        mask = (1U << length) - 1;
+
+        __asm__ __volatile__ (
+                "vmovdqu ymm0, [%[key1]]\n"      
+                "vmovdqu ymm1, [%[key2]]\n"      
+                "vpcmpeqb ymm2, ymm0, ymm1\n" 
+                "vpmovmskb %[bitmask], ymm2\n"    
+                : [bitmask] "=a" (bitmask)           
+                : [key1] "r" (key),                
+                  [key2] "r" (node_data->key_pointer)
+                : "ymm0", "ymm1", "ymm2"       
+                );
+
+        if ((bitmask & mask) == mask) 
+        {
+            return node_data->count;
         }
     }
 
-    for (; i < length; i++)
-    {
-        if (key1[i] != key2[i]) 
-        {
-            return false; 
-        }
-    }
-    
-    return true;
+    return 0;
 }
+
+
+// static --------------------------------------------------------------------------------------------------------------
 
 
 static ListOperationError listResize(List* list) 
@@ -474,18 +300,9 @@ static ListOperationError listResize(List* list)
     }
     list->data = new_array_data;
 
-    //int* new_lengths_array = (int*)realloc(list->lengths, list->capacity * sizeof(int));
-    //if (!new_lengths_array)
-    //{
-    //    fprintf(stderr, "Error allocating memory for lengths\n");
-    //    return ListOperationError_ERROR;
-    //}
-
-    //list->lengths = new_lengths_array;
-
-    int index = list->free_node;
+    size_t index = list->free_node;
     int simd_size = 4;
-    for (; index  < (int)(list->capacity - simd_size + 1); index += simd_size)
+    for (; index  < list->capacity - simd_size + 1; index += simd_size)
     {
         __m256i next = _mm256_setr_epi32(
             index + 1, 0, index + 2, 0, index + 3, 0, index + 4, 0
@@ -500,12 +317,6 @@ static ListOperationError listResize(List* list)
         list->node_array[index].next = index + 1;
         list->node_array[index].prev = 0;
     }
-
-
-    //for (size_t i = list->free_node; i < list->capacity; i++) {
-    //    list->node_array[i].next = i + 1;
-    //    list->node_array[i].prev = 0;
-    //}
 
     return ListOperationError_SUCCESS;
 }

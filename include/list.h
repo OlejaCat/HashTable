@@ -53,5 +53,6 @@ ListOperationError listDeleteTail(List* list);
 ListOperationError listDeleteHead(List* list);
 
 const char* listIncrementValue(List* list, const char* key, size_t len);
+size_t listGetValue(List* list, const char* key, size_t length);
 
 #endif // LIST_H

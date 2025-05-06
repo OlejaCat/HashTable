@@ -1,5 +1,4 @@
 build/
-books/
 perf.data
 perf.data.old
 *.o

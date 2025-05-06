@@ -17,12 +17,16 @@ typedef struct Text
     char*  data;
     size_t current_position;
     size_t word_count;
+    size_t text_size;
 } Text;
 
 TextState textLoad(Text* text, const char* filename);
+TextState textDtor(Text* text);
+
 int textPutNextWordToBuffer(Text* text, char* buffer, size_t buffer_size);
 int textNextWordPointer(Text* text, char** pointer);
+int textGetRandomWord(Text* text, char** pointer);
+
 TextState textMoveToBegin(Text* text);
-TextState textDtor(Text* text);
 
 #endif // TEXT_PROCESSING_H

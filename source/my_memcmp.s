@@ -35,3 +35,4 @@ myMemcmp:
 .not_equal:
     xor rax, rax
     ret
+

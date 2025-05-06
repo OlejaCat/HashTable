@@ -12,7 +12,7 @@ def read_datafile(path):
         title = f.readline().strip()
         
         numbers = []
-        while len(numbers) < 4096:
+        while len(numbers) < 2048:
             line = f.readline()
             numbers.extend(map(int, line.strip().split()))
         
@@ -20,16 +20,17 @@ def read_datafile(path):
             'title': title,
             'variance': variance,
             'ms_time': ns_time / 1_000_000,
-            'points': numbers[:4096]
+            'points': numbers[:2048]
         }
 
 def create_plots(files):
     for filepath in files:
         data = read_datafile(filepath)
 
-        plt.figure(figsize=(12, 4))
-        plt.bar(range(4096), data['points'], width=1)
-        plt.title(f"{data['title']}\nVariance: {data['variance']:.3f}, Time: {data['ms_time']:.3f} ms")
+        plt.figure(figsize=(12, 5))
+        plt.bar(range(2048), data['points'])
+        plt.title(f"{data['title']}\nVariance: {data['variance']:.3f}")
+        plt.yscale('log')
         plt.xlabel("Index")
         plt.ylabel("Collisions")
         

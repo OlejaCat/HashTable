@@ -11,11 +11,23 @@ typedef uint32_t (*hashStringFunction)(const char*, size_t, size_t);
 
 uint32_t hash_string_length(const char* str, size_t len, size_t size)
 {
+    assert(str != NULL);
+
     return len % size;
+}
+
+uint32_t hash_string_bit_mask(const char* str, size_t len, size_t size)
+{
+    assert(str != NULL);
+
+    // only works when size=2^n
+    return len & (size - 1);
 }
 
 uint32_t hash_string_sum(const char* str, size_t len, size_t size)
 {
+    assert(str != NULL);
+    
     uint32_t sum = 0;
     for (size_t i = 0; i < len; i++)
     {
@@ -26,6 +38,8 @@ uint32_t hash_string_sum(const char* str, size_t len, size_t size)
 
 uint32_t hash_string_polynomial(const char* str, size_t len, size_t size)
 {
+    assert(str != NULL);
+
     uint32_t hash = 0;
     for (size_t i = 0; i < len; i++)
     {
@@ -38,6 +52,8 @@ uint32_t hash_string_polynomial(const char* str, size_t len, size_t size)
 
 uint32_t hash_string_crc32(const char* str, size_t len, size_t size)
 {
+    assert(str != NULL);
+
     uint32_t crc = 0xFFFFFFFF;
     size_t i = 0;
     uint64_t chunk;
@@ -60,6 +76,8 @@ uint32_t hash_string_crc32(const char* str, size_t len, size_t size)
 
 uint32_t hash_string_fnv_1a(const char* str, size_t len, size_t size)
 {
+    assert(str != NULL);
+
     const uint32_t FNV_prime = 0x01000193;
     const uint32_t FNV_offset_basis = 0x811C9DC5;
     uint32_t hash = FNV_offset_basis;
@@ -86,6 +104,8 @@ uint32_t hash_string_fnv_1a(const char* str, size_t len, size_t size)
 
 uint32_t hash_string_djb2(const char* str, size_t len, size_t size)
 {
+    assert(str != NULL);
+
     uint32_t hash = 5381;
     size_t i = 0;
 
@@ -98,6 +118,8 @@ uint32_t hash_string_djb2(const char* str, size_t len, size_t size)
 
 uint32_t hash_string_sdbm(const char* str, size_t len, size_t size)
 {
+    assert(str != NULL);
+
     uint32_t hash = 0;
     size_t i = 0;
 

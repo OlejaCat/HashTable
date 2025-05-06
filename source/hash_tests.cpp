@@ -7,7 +7,7 @@
 #include "messages.h"
 #include "hash_tests_logic.h"
 
-const size_t bucket_size = 4096;
+const size_t bucket_size = 2048;
 
 
 int main(int argc, char** argv)

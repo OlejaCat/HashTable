@@ -10,7 +10,7 @@
 
 // static ----------------------------------------------------------------------
 
-#define ADDITIONAL_SPACE 10
+#define ADDITIONAL_SPACE 64
 
 // error messages
 
@@ -62,6 +62,7 @@ TextState textLoad(Text* text, const char* filename)
     }
 
     text->word_count = 0;
+    text->text_size  = bytes_writen;
 
     fclose(text_file);
 
@@ -88,6 +89,8 @@ TextState textDtor(Text* text)
 
     return TextState_OK;
 }
+
+
 
 
 int textPutNextWordToBuffer(Text* text, char* buffer, size_t buffer_size)
@@ -122,6 +125,65 @@ int textPutNextWordToBuffer(Text* text, char* buffer, size_t buffer_size)
     text->current_position = current_text - text->data;
 
     return i;
+}
+
+
+int textGetRandomWord(Text* text, char** pointer) 
+{
+    assert(text != NULL);
+    assert(pointer != NULL);
+
+    if (text->data == NULL || text->text_size == 0) {
+        *pointer = NULL;
+        return 0;
+    }
+
+    size_t random_pos = rand() % text->text_size;
+    size_t start, pos;
+
+    // Поиск начала слова, в котором находится random_pos
+    start = random_pos;
+    while (start > 0 && isalnum((unsigned char)text->data[start - 1])) {
+        start--;
+    }
+
+    // Проверяем, является ли найденная позиция началом слова
+    if (isalnum((unsigned char)text->data[start])) {
+        pos = start;
+        while (pos < text->text_size && isalnum((unsigned char)text->data[pos])) {
+            pos++;
+        }
+        *pointer = &text->data[start];
+        return pos - start;
+    }
+
+    // Поиск следующего слова после random_pos
+    for (pos = random_pos; pos < text->text_size; pos++) {
+        if (isalnum((unsigned char)text->data[pos])) {
+            start = pos;
+            while (pos < text->text_size && isalnum((unsigned char)text->data[pos])) {
+                pos++;
+            }
+            *pointer = &text->data[start];
+            return pos - start;
+        }
+    }
+
+    // Поиск первого слова с начала текста
+    for (pos = 0; pos < random_pos; pos++) {
+        if (isalnum((unsigned char)text->data[pos])) {
+            start = pos;
+            while (pos < text->text_size && isalnum((unsigned char)text->data[pos])) {
+                pos++;
+            }
+            *pointer = &text->data[start];
+            return pos - start;
+        }
+    }
+
+    // Слов не найдено
+    *pointer = NULL;
+    return 0;
 }
 
 

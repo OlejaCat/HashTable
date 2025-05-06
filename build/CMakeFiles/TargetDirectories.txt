@@ -1,3 +1,0 @@
-/home/oleg/projects/HashTable/build/CMakeFiles/hash_tester.dir
-/home/oleg/projects/HashTable/build/CMakeFiles/edit_cache.dir
-/home/oleg/projects/HashTable/build/CMakeFiles/rebuild_cache.dir
