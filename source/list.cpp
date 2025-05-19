@@ -220,7 +220,7 @@ const char* listIncrementValue(List* list, const char* key, size_t length)
         NodeData* node_data = &list->data[i];
         if (node_data->length == (int)length) 
         {
-            if (myMemcmp(key, node_data->key_pointer, length)) 
+            if (!memcmp(key, node_data->key_pointer, length)) 
             {
                 node_data->count++;
                 return node_data->key_pointer;
@@ -248,31 +248,31 @@ size_t listGetValue(List* list, const char* key, size_t length)
             continue; 
         }
 
-        //if (myMemcmp(key, node_data->key_pointer, length))
-        //{
-        //    return node_data->count;
-        //}
-
-        uint32_t bitmask = 0;
-        uint32_t mask    = 0;
-
-        mask = (1U << length) - 1;
-
-        __asm__ __volatile__ (
-                "vmovdqu ymm0, [%[key1]]\n"      
-                "vmovdqu ymm1, [%[key2]]\n"      
-                "vpcmpeqb ymm2, ymm0, ymm1\n" 
-                "vpmovmskb %[bitmask], ymm2\n"    
-                : [bitmask] "=a" (bitmask)           
-                : [key1] "r" (key),                
-                  [key2] "r" (node_data->key_pointer)
-                : "ymm0", "ymm1", "ymm2"       
-                );
-
-        if ((bitmask & mask) == mask) 
+        if (!memcmp(key, node_data->key_pointer, length))
         {
             return node_data->count;
         }
+
+        //uint32_t bitmask = 0;
+        //uint32_t mask    = 0;
+
+        //mask = (1U << length) - 1;
+
+        //__asm__ __volatile__ (
+        //        "vmovdqu ymm0, [%[key1]]\n"      
+        //        "vmovdqu ymm1, [%[key2]]\n"      
+        //        "vpcmpeqb ymm2, ymm0, ymm1\n" 
+        //        "vpmovmskb %[bitmask], ymm2\n"    
+        //        : [bitmask] "=a" (bitmask)           
+        //        : [key1] "r" (key),                
+        //          [key2] "r" (node_data->key_pointer)
+        //        : "ymm0", "ymm1", "ymm2"       
+        //        );
+
+        //if ((bitmask & mask) == mask) 
+        //{
+        //    return node_data->count;
+        //}
     }
 
     return 0;
