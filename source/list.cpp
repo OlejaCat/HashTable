@@ -220,7 +220,7 @@ const char* listIncrementValue(List* list, const char* key, size_t length)
         NodeData* node_data = &list->data[i];
         if (node_data->length == (int)length) 
         {
-            if (!memcmp(key, node_data->key_pointer, length)) 
+            if (myMemcmp(key, node_data->key_pointer, length)) 
             {
                 node_data->count++;
                 return node_data->key_pointer;
@@ -247,6 +247,11 @@ size_t listGetValue(List* list, const char* key, size_t length)
         {
             continue; 
         }
+
+        //if (myMemcmp(key, node_data->key_pointer, length))
+        //{
+        //    return node_data->count;
+        //}
 
         uint32_t bitmask = 0;
         uint32_t mask    = 0;

@@ -4,6 +4,8 @@
 #include <ctype.h>
 #include <string.h>
 #include <assert.h>
+#include <immintrin.h>
+#include <x86intrin.h>
 
 #include "hash_table.h"
 
@@ -141,27 +143,30 @@ int textGetRandomWord(Text* text, char** pointer)
     size_t random_pos = rand() % text->text_size;
     size_t start, pos;
 
-    // Поиск начала слова, в котором находится random_pos
     start = random_pos;
-    while (start > 0 && isalnum((unsigned char)text->data[start - 1])) {
+    while (start > 0 && isalnum((unsigned char)text->data[start - 1])) 
+    {
         start--;
     }
 
-    // Проверяем, является ли найденная позиция началом слова
-    if (isalnum((unsigned char)text->data[start])) {
+    if (isalnum((unsigned char)text->data[start])) 
+    {
         pos = start;
-        while (pos < text->text_size && isalnum((unsigned char)text->data[pos])) {
+        while (pos < text->text_size && isalnum((unsigned char)text->data[pos])) 
+        {
             pos++;
         }
         *pointer = &text->data[start];
         return pos - start;
     }
 
-    // Поиск следующего слова после random_pos
-    for (pos = random_pos; pos < text->text_size; pos++) {
-        if (isalnum((unsigned char)text->data[pos])) {
+    for (pos = random_pos; pos < text->text_size; pos++) 
+    {
+        if (isalnum((unsigned char)text->data[pos])) 
+        {
             start = pos;
-            while (pos < text->text_size && isalnum((unsigned char)text->data[pos])) {
+            while (pos < text->text_size && isalnum((unsigned char)text->data[pos])) 
+            {
                 pos++;
             }
             *pointer = &text->data[start];
@@ -169,11 +174,13 @@ int textGetRandomWord(Text* text, char** pointer)
         }
     }
 
-    // Поиск первого слова с начала текста
-    for (pos = 0; pos < random_pos; pos++) {
-        if (isalnum((unsigned char)text->data[pos])) {
+    for (pos = 0; pos < random_pos; pos++) 
+    {
+        if (isalnum((unsigned char)text->data[pos])) 
+        {
             start = pos;
-            while (pos < text->text_size && isalnum((unsigned char)text->data[pos])) {
+            while (pos < text->text_size && isalnum((unsigned char)text->data[pos])) 
+            {
                 pos++;
             }
             *pointer = &text->data[start];
@@ -181,7 +188,6 @@ int textGetRandomWord(Text* text, char** pointer)
         }
     }
 
-    // Слов не найдено
     *pointer = NULL;
     return 0;
 }
@@ -223,6 +229,29 @@ int textNextWordPointer(Text* text, char** pointer)
     text->word_count++;
 
     return length;
+}
+
+
+int textGetNextLine(Text* text, char** pointer) 
+{
+    assert(text != NULL);
+
+    char* current = text->data + text->current_position;
+    if (*current == '\0') return 0;
+
+    const __m256i chunk = _mm256_loadu_si256((__m256i*)current);
+    const __m256i separators = _mm256_set1_epi8('\n');
+
+    const __m256i cmp_res = _mm256_cmpeq_epi8(chunk, separators);
+    unsigned mask = _mm256_movemask_epi8(cmp_res);
+
+    const int pos = mask ? __builtin_ctz(mask) : 32;
+
+    *pointer = current;
+    text->current_position += pos + 1;
+    text->word_count++;
+
+    return pos;
 }
 
 

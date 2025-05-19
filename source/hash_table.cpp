@@ -234,10 +234,44 @@ static uint32_t hashFunction(const char* str, size_t len, size_t size)
 {
     assert(str != NULL);
 
-    uint32_t crc = 0xFFFFFFFF;
-    for (size_t i = 0; i < len; i++) 
+    const char* i = NULL;
+    int j;
+    uint32_t byte = 0, crc = 0, mask = 0;
+    static uint32_t crc32_table[256] = {0};
+
+    if (crc32_table[1] == 0)
     {
-        crc = _mm_crc32_u8(crc, str[i]);
+        for (byte = 0; byte <= 255; byte++)
+        {
+            crc = byte;
+            for (j = 7; j >= 0; j--)
+            {
+                mask = -(crc & 1);
+                crc = (crc >> 1) ^ (0xEDB88320 & mask);
+            }
+            crc32_table[byte] = crc;
+        }
     }
-    return (~crc) & (size - 1);
+
+    crc = 0xFFFFFFFF;
+    for (i = str; i < str + len; ++i)
+    {
+        uint8_t ch = (uint8_t)*i;
+        crc = (crc >> 8) ^ crc32_table[(crc ^ ch) & 0xFF];
+    }
+
+    return (~crc) % size;
 }
+
+
+//static uint32_t hashFunction(const char* str, size_t len, size_t size)
+//{
+//    assert(str != NULL);
+//
+//    uint32_t crc = 0xFFFFFFFF;
+//    for (size_t i = 0; i < len; i++) 
+//    {
+//        crc = _mm_crc32_u8(crc, str[i]);
+//    }
+//    return (~crc) & (size - 1);
+//}

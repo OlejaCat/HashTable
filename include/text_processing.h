@@ -26,6 +26,7 @@ TextState textDtor(Text* text);
 int textPutNextWordToBuffer(Text* text, char* buffer, size_t buffer_size);
 int textNextWordPointer(Text* text, char** pointer);
 int textGetRandomWord(Text* text, char** pointer);
+int textGetNextLine(Text* text, char** pointer);
 
 TextState textMoveToBegin(Text* text);
 
