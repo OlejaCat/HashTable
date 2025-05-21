@@ -5,10 +5,10 @@ set(CMAKE_ASM_NASM_SOURCE_FILE_EXTENSIONS s)
 
 enable_language(ASM_NASM)
 
-set(CMAKE_CXX_FLAGS "--std=c++20 -Wall -masm=intel -Wextra -pedantic -no-pie -mavx2 -march=native")
+set(CMAKE_CXX_FLAGS "--std=c++20 -fopenmp -Wall -Wextra -pedantic -no-pie -masm=intel -mavx2 -march=native")
 
 set(CMAKE_CXX_FLAGS_DEBUG "-fsanitize=address -Og")
-set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+set(CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG -fstack-protector-strong -O2 -g")
 
 set(CMAKE_ASM_NASM_OBJECT_FORMAT "elf64")
 set(CMAKE_ASM_NASM_FLAGS "-Wall -g")
